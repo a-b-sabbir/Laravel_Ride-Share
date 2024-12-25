@@ -1,22 +1,29 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// User logout (use middleware for authentication)
+Route::get('/registration', function () {
+    return view('/auth/registration');
+});
+Route::post('/register_post', [AuthController::class, 'register_post']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/login', function () {
+    return view('/auth/login');
+});
+Route::post('/login_post', [AuthController::class, 'login_post']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/forgot', function () {
+    return view('/auth/forgot');
 });
 
+Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
+
+Route::Post('/profile', [ProfileController::class, 'store'])->name('profile.store');
+Route::get('/profile', [ProfileController::class, 'index']);
