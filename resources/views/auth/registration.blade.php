@@ -10,7 +10,7 @@
                     <h4>
                         <center>Registration</center>
                     </h4>
-                    <form action="{{ url('registration_post') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('register_post') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Profile Photo</label>
@@ -46,8 +46,8 @@
                                 <option value="1">Super Admin</option>
                                 <option value="2">Admin</option>
                                 <option value="3">Sub-Admin</option>
-                                <option value="3">Driver</option>
-                                <option value="3">Passenger</option>
+                                <option value="4">Driver</option>
+                                <option value="5">Passenger</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-success">Submit</button>
