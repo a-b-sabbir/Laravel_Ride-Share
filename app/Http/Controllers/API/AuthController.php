@@ -108,7 +108,6 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-
         $user = Auth::user();
 
         if (!$user) {
@@ -122,11 +121,7 @@ class AuthController extends Controller
         $user->tokens->each(function ($token) {
             $token->delete();
         });
-
-        return response()->json([
-            'status' => true,
-            'message' => 'User logged out',
-            'data' => null
-        ]);
+        Auth::logout();
+        return redirect(url('login'));
     }
 }

@@ -22,6 +22,8 @@ Route::get('/forgot', function () {
     return view('/auth.forgot');
 });
 
+Route::get('logout', [AuthController::class, 'logout']);
+
 // Profile Management (Create, Store, and View Profile)
 Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');  // Profile creation page
 Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');  // Store profile data
