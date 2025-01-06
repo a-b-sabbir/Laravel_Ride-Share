@@ -67,25 +67,27 @@ class AuthController extends Controller
         if (Auth::attempt([
             "email" => $request->email,
             "password" => $request->password
-        ], $request->has('remember', true))) {
-
-            if (Auth::user()->role_id == '1') {
-                return redirect()->intended('super_admin/dashboard');
-            } elseif (Auth::user()->role_id == '2') {
-                return redirect()->intended('admin/dashboard');
-            } elseif (Auth::user()->role_id == '3') {
-                return redirect()->intended('sub_admin/dashboard');
-            } elseif (Auth::user()->role_id == '4') {
-                return redirect()->intended('driver/dashboard');
-            } elseif (Auth::user()->role_id == '5') {
-                return redirect()->intended('passenger/dashboard');
-            } else {
-                return redirect()->with('error', 'No Available Credential');
-            }
-
+        ], $request->has('remember'))) {
 
             // If authentication is successful, get the authenticated user
             $user = Auth::user();
+
+            // Redirect based on role for web-based login
+            switch ($user->role_id) {
+                case 1: // Super Admin
+                    return redirect()->intended('super_admin/dashboard');
+                case 2: // Admin
+                    return redirect()->intended('admin/dashboard');
+                case 3: // Sub Admin
+                    return redirect()->intended('sub_admin/dashboard');
+                case 4: // Pilot
+                    return redirect()->intended('pilot/dashboard');
+                case 5: // Passenger
+                    return redirect()->intended('passenger/dashboard');
+                default:
+                    Auth::logout();
+                    return redirect()->back()->with('error', 'Invalid role.');
+            }
 
             // Prepare a response with the user's token and details
             $response = [];
@@ -124,4 +126,5 @@ class AuthController extends Controller
         Auth::logout();
         return redirect(url('login'));
     }
+    public function forgot(Request $request) {}
 }

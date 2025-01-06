@@ -19,6 +19,9 @@ class DashboardController extends Controller
         } elseif (Auth::user()->role_id == '3') {
             $data['getRecord'] = User::find(Auth::user()->id);
             return view('sub_admin/dashboard', $data);
+        } elseif (Auth::user()->role_id == '4') {
+            $data['getRecord'] = User::find(Auth::user()->id);
+            return view('pilot/dashboard', $data);
         } else {
         }
     }

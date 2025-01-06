@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class DriverMiddleware
+class PilotMiddleware
 {
     /**
      * Handle an incoming request.

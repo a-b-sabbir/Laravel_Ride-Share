@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\PilotController;
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\DriverMiddleware;
 use App\Http\Middleware\PassengerMiddleware;
+use App\Http\Middleware\PilotMiddleware;
 use App\Http\Middleware\SubAdminMiddleware;
 use App\Http\Middleware\SuperAdminMiddleware;
 use Illuminate\Foundation\Application;
@@ -22,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'super_admin' => SuperAdminMiddleware::class,
             'admin' => AdminMiddleware::class,
             'sub_admin' => SubAdminMiddleware::class,
-            'driver' => DriverMiddleware::class,
+            'pilot' => PilotMiddleware::class,
             'passenger' => PassengerMiddleware::class
         ]);
     })

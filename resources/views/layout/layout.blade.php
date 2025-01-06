@@ -13,6 +13,11 @@
             padding: 20px;
             text-align: center;
         }
+
+        .required::after {
+            content: ' *';
+            color: red;
+        }
     </style>
 </head>
 
@@ -24,7 +29,7 @@
     </div>
     <br>
     <footer>
-        Copyright 2024 Pizzaburg
+        Copyright 2024 Ride-Share
     </footer>
 </body>
 
