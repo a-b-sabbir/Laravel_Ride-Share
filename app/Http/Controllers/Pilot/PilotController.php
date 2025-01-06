@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pilot;
 
+use App\Http\Controllers\Controller;
 use App\Models\Pilot;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -68,9 +69,11 @@ class PilotController extends Controller
 
             DB::commit();
 
-            return redirect()->route('pilot.success')->with('success', 'Pilot registered successfully.');
+            // Redirect to the success page with a success message
+            return redirect()->route('pilot_license')->with('success', 'Pilot basic registration successful. Please fill up the current form.');
         } catch (\Exception $e) {
             DB::rollBack();
+            // Redirect to the fail page with an error message
             return redirect()->route('pilot.fail')->with('error', 'Pilot registration failed. Please try again.');
         }
     }

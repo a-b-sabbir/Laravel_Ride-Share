@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\PilotController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PassengerMiddleware;
 use App\Http\Middleware\PilotMiddleware;

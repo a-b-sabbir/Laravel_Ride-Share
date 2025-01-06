@@ -173,7 +173,7 @@
 
                             <!-- Submit Button -->
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary btn-lg w-100">Register</button>
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Submit</button>
                             </div>
                         </form>
                     </div>
