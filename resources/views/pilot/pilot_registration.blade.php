@@ -126,11 +126,11 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="emergency_contact_name" class="form-label fw-bold required">Emergency Contact Name</label>
-                                    <input type="text" class="form-control" name="emergency_contact_name" id="emergency_contact_name" placeholder="Name of emergency contact">
+                                    <input type="text" class="form-control" name="emergency_contact_name" id="emergency_contact_name" placeholder="Name of emergency contact" value="{{ old('emergency_contact_name') }}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="emergency_contact_number" class="form-label fw-bold required">Emergency Contact Number</label>
-                                    <input type="text" class="form-control" name="emergency_contact_number" id="emergency_contact_number" placeholder="Contact number">
+                                    <input type="text" class="form-control" name="emergency_contact_number" id="emergency_contact_number" placeholder="Contact number" value="{{ old('emergency_contact_number') }}">
                                     @if($errors->has('emergency_contact_number'))
                                     <div class="text-danger">
                                         <small>{{ $errors->first('emergency_contact_number') }}</small>
@@ -142,7 +142,7 @@
                             <!-- Relation with Emergency Contact -->
                             <div class="mb-3">
                                 <label for="relation_with_emergency_contact" class="form-label fw-bold required">Relation with Emergency Contact</label>
-                                <input type="text" class="form-control" name="relation_with_emergency_contact" id="relation_with_emergency_contact" placeholder="e.g., Father, Friend">
+                                <input type="text" class="form-control" name="relation_with_emergency_contact" id="relation_with_emergency_contact" placeholder="e.g., Father, Friend" value="{{ old('relation_with_emergency_contact') }}">
                             </div>
 
                             <!-- Preferred Shift -->
@@ -154,21 +154,6 @@
                                     <option value="night">Night</option>
                                     <option value="flexible" selected>Flexible</option>
                                 </select>
-                            </div>
-
-                            <!-- Preferred Vehicle Type -->
-                            <div class="mb-3">
-                                <label for="preferred_vehicle_type" class="form-label fw-bold required">Preferred Vehicle Type</label>
-                                <select class="form-select" name="preferred_vehicle_type" id="preferred_vehicle_type">
-                                    <option value="" selected>Select</option>
-                                    <option value="car">Car</option>
-                                    <option value="bike" selected>Bike</option>
-                                </select>
-                                @if($errors->has('preferred_vehicle_type'))
-                                <div class="text-danger">
-                                    <small>{{ $errors->first('preferred_vehicle_type') }}</small>
-                                </div>
-                                @endif
                             </div>
 
                             <!-- Submit Button -->

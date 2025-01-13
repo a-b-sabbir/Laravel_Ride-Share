@@ -16,7 +16,6 @@
             {{ session('success') }}
         </div>
         @endif
-        <a href="/pilot-registration" class="btn btn-primary">Go Back to Registration</a>
     </div>
 </body>
 

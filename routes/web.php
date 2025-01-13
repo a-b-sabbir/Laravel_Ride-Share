@@ -6,6 +6,7 @@ use App\Http\Controllers\Pilot\LicenseController;
 use App\Http\Controllers\Pilot\PilotController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Vehicle\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 // Default Route
@@ -30,13 +31,20 @@ Route::get('logout', [AuthController::class, 'logout']);
 // Pilot Routes
 // -------------------------------------------
 
+// Routes for pilot registration
 Route::view('/pilot-registration', 'pilot.pilot_registration');
 Route::post('/pilot/register', [PilotController::class, 'store'])->name('pilot_register');
-Route::view('/pilot/license', 'pilot.pilot_license')->name('pilot_license');
-Route::post('/upload-license', [LicenseController::class, 'uploadLicense'])->name('license.upload');
-Route::post('pilot/license', [LicenseController::class, 'store'])->name('pilot_license');
-Route::view('/pilot/success', 'pilot.success')->name('pilot.success');
 Route::view('/pilot/fail', 'pilot.fail')->name('pilot.fail');
+
+// Routes for pilot license
+Route::get('/pilot/license', [LicenseController::class, 'showLicenseForm'])->name('pilot_license');
+Route::post('/upload-license', [LicenseController::class, 'uploadLicense'])->name('license.upload');
+
+Route::view('/vehicle', 'vehicle.vehicle_form')->name('vehicle.register');
+// Route::post('pilot/license', [LicenseController::class, 'store'])->name('pilot_license');
+Route::view('/license/success', 'pilot.success')->name('license.success');
+Route::view('/license/fail', 'pilot.fail')->name('license.fail');
+
 
 
 // -------------------------------------------

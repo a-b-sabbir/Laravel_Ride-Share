@@ -13,20 +13,19 @@ class PilotController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'profile_photo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'profile_photo' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
             'name' => 'required|string',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
             'phone_number' => 'required|unique:users|',
             'nid' => ['required', 'string', 'unique:pilots,nid', 'regex:/^\d{10}$|^\d{13}$|^\d{17}$/'],
-            'nid_image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'nid_image' => 'required|image|mimes:jpg,png,jpeg|max:5000',
             'address' => 'required|string',
             'emergency_contact_name' => 'nullable|string',
             'emergency_contact_number' => 'nullable|string|max:14',
             'relation_with_emergency_contact' => 'nullable|string',
             'preferred_shift' => 'nullable|in:day,night,flexible',
-            'preferred_vehicle_type' => 'required|in:car,bike'
         ]);
 
         try {
@@ -64,13 +63,12 @@ class PilotController extends Controller
                 'emergency_contact_number' => $validatedData['emergency_contact_number'],
                 'relation_with_emergency_contact' => $validatedData['relation_with_emergency_contact'],
                 'preferred_shift' => $validatedData['preferred_shift'],
-                'preferred_vehicle_type' => $validatedData['preferred_vehicle_type'],
             ]);
 
             DB::commit();
 
             // Redirect to the success page with a success message
-            return redirect()->route('pilot_license')->with('success', 'Pilot basic registration successful. Please fill up the current form.');
+            return redirect()->route('pilot_license', ['pilot_id' => $pilot->id])->with('success', 'Pilot basic registration successful. Please fill up the current form.');
         } catch (\Exception $e) {
             DB::rollBack();
             // Redirect to the fail page with an error message

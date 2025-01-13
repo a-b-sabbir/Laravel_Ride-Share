@@ -22,4 +22,8 @@ class Pilot extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function license(){
+        return $this->hasOne('PilotLicense::class');
+    }
 }
