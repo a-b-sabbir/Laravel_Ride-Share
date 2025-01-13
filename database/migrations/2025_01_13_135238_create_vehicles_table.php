@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('brand');
             $table->integer('make');
             $table->string('model');
-            $table->string('color');
             $table->enum('approval', ['Pending', 'Approved', 'Rejected'])->default('Pending');
             $table->boolean('is_active')->default(false);
             $table->timestamps();

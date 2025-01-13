@@ -48,6 +48,7 @@ class LicenseController extends Controller
             'ref_no' => 'nullable|max:20',
             'issuing_authority' => 'required',
         ]);
+        
         try {
             DB::beginTransaction();
 

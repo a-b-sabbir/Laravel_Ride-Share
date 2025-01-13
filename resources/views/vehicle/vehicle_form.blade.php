@@ -18,10 +18,10 @@
                     </div>
                     @endif
                     <h4>
-                        <center>Vehicle Registration Form</center>
+                        <center>Vehicle Info Form</center>
                     </h4>
                     <div class="mb-3">
-                        <form action="" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="{{ route('uploadVehicle') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
 
                             <!-- Type -->
@@ -47,6 +47,13 @@
                                     <small>{{ $errors->first('photo') }}</small>
                                 </div>
                                 @endif
+                            </div>
+
+                            <!-- Vehicle Number -->
+
+                            <div class="mb-3">
+                                <label for="vehicle_number" class="form-label fw-bold required">Vehicle Number</label>
+                                <input type="text" class="form-control" name="vehicle_number" id="vehicle_number" value="{{ old('vehicle_number') }}" required>
                             </div>
 
                             <!-- Brand -->
@@ -84,8 +91,8 @@
                                 <label for="make" class="form-label fw-bold required">Make</label>
                                 <select class="form-select" name="make" id="make" required>
                                     <option value="disabled selected">Select Make</option>
-                                    <option value="Corolla">2020</option>
-                                    <option value="Corona">2021</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
                                 </select>
                                 @if($errors->has('make'))
                                 <div class="danger">

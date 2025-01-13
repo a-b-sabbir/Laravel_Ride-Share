@@ -41,9 +41,16 @@ Route::get('/pilot/license', [LicenseController::class, 'showLicenseForm'])->nam
 Route::post('/upload-license', [LicenseController::class, 'uploadLicense'])->name('license.upload');
 
 Route::view('/vehicle', 'vehicle.vehicle_form')->name('vehicle.register');
+Route::post('/vehicle/register', [VehicleController::class, 'store'])->name('uploadVehicle');
+Route::view('/vehicle/registration', 'vehicle.vehicle_registration_paper')->name('vehicle_registration_paper');
 // Route::post('pilot/license', [LicenseController::class, 'store'])->name('pilot_license');
 Route::view('/license/success', 'pilot.success')->name('license.success');
 Route::view('/license/fail', 'pilot.fail')->name('license.fail');
+
+
+// Demo
+
+Route::view('/demo', 'demo')->name('demo');
 
 
 

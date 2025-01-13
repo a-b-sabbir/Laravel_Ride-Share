@@ -15,7 +15,6 @@ class Pilot extends Model
         'emergency_contact_number',
         'relation_with_emergency_contact',
         'preferred_shift',
-        'preferred_vehicle_type',
     ];
 
     public function user()
@@ -23,7 +22,8 @@ class Pilot extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function license(){
+    public function license()
+    {
         return $this->hasOne('PilotLicense::class');
     }
 }
