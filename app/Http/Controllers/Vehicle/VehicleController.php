@@ -19,8 +19,7 @@ class VehicleController extends Controller
                 'vehicle_number' => 'required|string|min:3|max:20',
                 'brand' => 'required|string',
                 'model' => 'required|string',
-                'make' => 'required',
-                'color' => 'required|string'
+                'make' => 'required'
             ]
         );
 
@@ -36,7 +35,6 @@ class VehicleController extends Controller
                 'brand' => $validatedData['brand'],
                 'make' => $validatedData['make'],
                 'model' => $validatedData['model'],
-                'color' => $validatedData['color'],
             ]);
             DB::commit();
 
