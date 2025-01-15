@@ -38,8 +38,9 @@ class VehicleController extends Controller
             ]);
             DB::commit();
 
-            return redirect()->route('vehicle_registration_paper')->with('success', 'Successfully Submitted.');
+            return redirect()->route('registration_paper_photo')->with('success', 'Successfully Submitted.');
         } catch (\Exception $e) {
         }
     }
+
 }

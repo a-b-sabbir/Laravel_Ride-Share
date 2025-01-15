@@ -6,6 +6,7 @@ use App\Http\Controllers\Pilot\LicenseController;
 use App\Http\Controllers\Pilot\PilotController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Vehicle\RegistrationPaperController;
 use App\Http\Controllers\Vehicle\VehicleController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,8 +43,13 @@ Route::post('/upload-license', [LicenseController::class, 'uploadLicense'])->nam
 
 Route::view('/vehicle', 'vehicle.vehicle_form')->name('vehicle.register');
 Route::post('/vehicle/register', [VehicleController::class, 'store'])->name('uploadVehicle');
-Route::view('/vehicle/registration', 'vehicle.vehicle_registration_paper')->name('vehicle_registration_paper');
-// Route::post('pilot/license', [LicenseController::class, 'store'])->name('pilot_license');
+Route::view('/vehicle/registration-photo', 'vehicle.registration_paper_photo')->name('registration_paper_photo');
+Route::view('/vehicle/registration-form', 'vehicle.registration_paper_form')->name('registration_paper_form');
+
+Route::post('vehicle/registration-paper', [RegistrationPaperController::class, 'uploadImage'])->name('uploadImage');
+
+
+
 Route::view('/license/success', 'pilot.success')->name('license.success');
 Route::view('/license/fail', 'pilot.fail')->name('license.fail');
 

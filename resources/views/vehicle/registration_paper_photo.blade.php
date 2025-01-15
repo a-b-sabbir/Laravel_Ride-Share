@@ -21,26 +21,26 @@
                         <center>Vehicle Registration Paper Form</center>
                     </h4>
                     <div class="mb-3">
-                        <form action="" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="{{ route('uploadImage') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
 
-                            <!-- Color -->
+                            <!-- Registration Photo -->
                             <div class="mb-3">
-                                <label for="color" class="form-label fw-bold required">Color</label>
-                                <select class="form-select" name="color" id="color" required>
-                                    <option value="disabled selected">Select Color</option>
-                                    <option value="White">White</option>
-                                    <option value="Black">Black</option>
-                                    <option value="Red">Red</option>
-                                    <option value="Silver">Silver</option>
-                                    <option value="Yellow">Yellow</option>
-                                </select>
-                                @if($errors->has('color'))
-                                <div class="danger">
-                                    <small>{{ $errors->first('color') }}</small>
+                                <label for="registration_photo" class="form-label fw-bold required">Registration Paper Photo</label>
+                                <input type="file" class="form-control" name="registration_photo" id="registration_photo">
+
+                                @if ($errors->has('registration_photo'))
+                                <div class="text-danger">
+                                    <small>{{ $errors->first('registration_photo') }}</small>
                                 </div>
                                 @endif
                             </div>
+
+                            <!-- Submit Button -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-lg w-100">Submit</button>
+                            </div>
+
                         </form>
                     </div>
                 </div>
