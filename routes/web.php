@@ -4,10 +4,13 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Pilot\LicenseController;
 use App\Http\Controllers\Pilot\PilotController;
+use App\Http\Controllers\PilotVehicleAssignmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Vehicle\RegistrationPaperController;
+use App\Http\Controllers\Vehicle\TaxTokenController;
 use App\Http\Controllers\Vehicle\VehicleController;
+use App\Models\PilotVehicleAssignment;
 use Illuminate\Support\Facades\Route;
 
 // Default Route
@@ -49,6 +52,8 @@ Route::view('/vehicle/registration-form', 'vehicle.registration_paper_form')->na
 Route::post('vehicle/registration-paper', [RegistrationPaperController::class, 'uploadImage'])->name('uploadImage');
 
 
+Route::post('/vehicle/tax-token-form', [TaxTokenController::class, 'showInfo'])->name('showTokenInfo');
+
 
 Route::view('/license/success', 'pilot.success')->name('license.success');
 Route::view('/license/fail', 'pilot.fail')->name('license.fail');
@@ -84,4 +89,13 @@ Route::group(['middleware' => 'sub_admin'], function () {
 
 Route::group(['middleware' => 'pilot'], function () {
     Route::get('pilot/dashboard', [DashboardController::class, 'dashboard']);
+});
+
+
+
+// Remove the 'role:sub_admin' middleware from here
+Route::middleware(['auth'])->group(function () {
+    Route::get('sub_admin/dashboard', [DashboardController::class, 'dashboard'])->name('sub_admin.dashboard');
+    Route::get('assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('assign-pilot-to-vehicle.create');
+    Route::post('assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('assign-pilot-to-vehicle.store');
 });

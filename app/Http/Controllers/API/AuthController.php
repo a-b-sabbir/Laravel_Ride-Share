@@ -72,6 +72,8 @@ class AuthController extends Controller
             // If authentication is successful, get the authenticated user
             $user = Auth::user();
 
+            session(['user_name' => $user->name]); // Store user name in session
+
             // Redirect based on role for web-based login
             switch ($user->role_id) {
                 case 1: // Super Admin

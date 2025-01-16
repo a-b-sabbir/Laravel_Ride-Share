@@ -26,4 +26,9 @@ class Pilot extends Model
     {
         return $this->hasOne('PilotLicense::class');
     }
+
+    public function assignments()
+    {
+        return $this->hasMany(PilotVehicleAssignment::class, 'pilot_id');
+    }
 }

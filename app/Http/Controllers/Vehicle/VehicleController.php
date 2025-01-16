@@ -27,8 +27,8 @@ class VehicleController extends Controller
             DB::beginTransaction();
 
             $vehcilePhotoPath = $request->file('photo')->store('vehicle_photos', 'public');
-
-            Vehicle::create([
+          
+            $vehicle = Vehicle::create([
                 'type' => $validatedData['type'],
                 'photo' => $vehcilePhotoPath,
                 'vehicle_number' => $validatedData['vehicle_number'],
@@ -38,9 +38,8 @@ class VehicleController extends Controller
             ]);
             DB::commit();
 
-            return redirect()->route('registration_paper_photo')->with('success', 'Successfully Submitted.');
+            return view('vehicle.tax-token-photo');
         } catch (\Exception $e) {
         }
     }
-
 }
