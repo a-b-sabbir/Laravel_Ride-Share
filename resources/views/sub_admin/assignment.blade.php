@@ -12,7 +12,7 @@
         <select name="pilot_id" id="pilot_id" class="form-control" required>
             <option value="" disabled selected>Select a pilot</option>
             @foreach($pilots as $pilot)
-            <option value="{{ $pilot->id }}">{{ $pilot->user->name }}</option>
+            <option value="{{ $pilot->id }}">{{ $pilot->user->name }}- {{ $pilot->nid }}</option>
             @endforeach
         </select>
     </div>
@@ -31,13 +31,19 @@
     <!-- Start Date -->
     <div class="form-group">
         <label for="start_date">Start Date</label>
-        <input type="datetime-local" name="start_date" id="start_date" class="form-control" value="{{ old('start_date') }}" required>
+        <input
+            type="datetime-local"
+            name="start_date"
+            id="start_date"
+            class="form-control"
+            value="{{ old('start_date', date('Y-m-d\TH:i')) }}"
+            required>
     </div>
 
     <!-- End Date -->
     <div class="form-group">
         <label for="end_date">End Date (Optional)</label>
-        <input type="datetime-local" name="end_date" id="end_date" class="form-control" value="{{ old('end_date') }}">
+        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ old('end_date') }}">
     </div>
 
     <!-- Status -->

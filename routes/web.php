@@ -10,8 +10,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Vehicle\RegistrationPaperController;
 use App\Http\Controllers\Vehicle\TaxTokenController;
 use App\Http\Controllers\Vehicle\VehicleController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\PassengerMiddleware;
+use App\Http\Middleware\PilotMiddleware;
 use App\Models\PilotVehicleAssignment;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\SubAdminMiddleware;
+use App\Http\Middleware\SuperAdminMiddleware;
 
 // Default Route
 Route::get('/', function () {
@@ -59,12 +65,6 @@ Route::view('/license/success', 'pilot.success')->name('license.success');
 Route::view('/license/fail', 'pilot.fail')->name('license.fail');
 
 
-// Demo
-
-Route::view('/demo', 'demo')->name('demo');
-
-
-
 // -------------------------------------------
 // Profile Management Routes
 // -------------------------------------------
@@ -75,27 +75,26 @@ Route::get('/profile', [ProfileController::class, 'index']);
 // -------------------------------------------
 // Dashboard Routes (Role-Based Access)
 // -------------------------------------------
-Route::group(['middleware' => 'super_admin'], function () {
-    Route::get('super_admin/dashboard', [DashboardController::class, 'dashboard']);
+Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
+    Route::get('super_admin/dashboard', [DashboardController::class, 'dashboard'])->name('super_admin.dashboard');
+    Route::get('assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('assign-pilot-to-vehicle.create');
+    Route::post('assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('assign-pilot-to-vehicle.store');
 });
 
-Route::group(['middleware' => 'admin'], function () {
-    Route::get('admin/dashboard', [DashboardController::class, 'dashboard']);
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+    Route::get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('assign-pilot-to-vehicle.create');
+    Route::post('assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('assign-pilot-to-vehicle.store');
 });
 
-Route::group(['middleware' => 'sub_admin'], function () {
-    Route::get('sub_admin/dashboard', [DashboardController::class, 'dashboard']);
-});
-
-Route::group(['middleware' => 'pilot'], function () {
-    Route::get('pilot/dashboard', [DashboardController::class, 'dashboard']);
-});
-
-
-
-// Remove the 'role:sub_admin' middleware from here
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', SubAdminMiddleware::class])->group(function () {
     Route::get('sub_admin/dashboard', [DashboardController::class, 'dashboard'])->name('sub_admin.dashboard');
     Route::get('assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('assign-pilot-to-vehicle.create');
     Route::post('assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('assign-pilot-to-vehicle.store');
+});
+Route::middleware(['auth', PilotMiddleware::class])->group(function () {
+    Route::get('pilot/dashboard', [DashboardController::class, 'dashboard'])->name('pilot.dashboard');
+});
+Route::middleware(['auth', PassengerMiddleware::class])->group(function () {
+    Route::get('passenger/dashboard', [DashboardController::class, 'dashboard'])->name('passenger.dashboard');
 });

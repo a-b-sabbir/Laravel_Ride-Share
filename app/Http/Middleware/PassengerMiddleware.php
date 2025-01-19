@@ -16,16 +16,9 @@ class PassengerMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {
-            if (Auth::user()->role_id == 5) {
-                return $next($request);
-            } else {
-                Auth::logout();
-                return redirect(url('login'));
-            }
-        } else {
+        if (!Auth::check() || Auth::user()->role_id != 5) {
             Auth::logout();
-            return redirect(url('login'));
+            return redirect()->route('login'); // Redirect using route name
         }
 
         return $next($request);

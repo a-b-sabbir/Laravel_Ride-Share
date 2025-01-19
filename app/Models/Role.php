@@ -10,6 +10,7 @@ class Role extends Model
 
     public function user()
     {
-        return $this->belongsToMany(User::class, 'role_id', 'id');
+        return $this->hasMany(User::class, 'role_id');  // 'role_id' is the foreign key in the users table
     }
+    
 }
