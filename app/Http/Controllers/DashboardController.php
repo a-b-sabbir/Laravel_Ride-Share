@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Passenger\Passenger;
 use App\Models\Pilot;
 use App\Models\User;
 use App\Models\Vehicle\Vehicle;
@@ -15,6 +16,7 @@ class DashboardController extends Controller
         $user = Auth::user();  // Get the authenticated user
         $role = $user->role->name;  // Fetch the role name from the relationship
         $data['getRecord'] = $user;  // Pass user data to the view
+
 
         switch ($role) {
             case 'Super Admin':
@@ -36,6 +38,14 @@ class DashboardController extends Controller
 
             case 'Pilot':
                 return view('pilot.dashboard', $data);
+
+            case 'Passenger':
+
+                $data['user_name'] = session('user_name', $user->name);
+                $data['passenger'] = Passenger::where('user_id', Auth::id())->firstOrFail();
+                
+
+                return view('passenger.dashboard', $data);
 
             default:
                 abort(403, 'Unauthorized action.');

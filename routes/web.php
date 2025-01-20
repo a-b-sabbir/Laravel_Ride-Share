@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Passenger\PassengerController;
 use App\Http\Controllers\Pilot\LicenseController;
 use App\Http\Controllers\Pilot\PilotController;
 use App\Http\Controllers\PilotVehicleAssignmentController;
@@ -28,11 +29,10 @@ Route::get('/', function () {
 // Authentication Routes
 // -------------------------------------------
 Route::view('/chooseregistration', 'auth.chooseregistration');
-Route::view('/passenger-registration', 'auth.registration');
 Route::view('/login', 'auth.login');
 Route::view('/forgot', 'auth.forgot');
 
-Route::post('/register_post', [AuthController::class, 'register_post']);
+
 Route::post('/login_post', [AuthController::class, 'login_post']);
 Route::post('/forgot', [AuthController::class, 'forgot']);
 Route::get('logout', [AuthController::class, 'logout']);
@@ -40,7 +40,6 @@ Route::get('logout', [AuthController::class, 'logout']);
 // -------------------------------------------
 // Pilot Routes
 // -------------------------------------------
-
 // Routes for pilot registration
 Route::view('/pilot-registration', 'pilot.pilot_registration');
 Route::post('/pilot/register', [PilotController::class, 'store'])->name('pilot_register');
@@ -57,20 +56,17 @@ Route::view('/vehicle/registration-form', 'vehicle.registration_paper_form')->na
 
 Route::post('vehicle/registration-paper', [RegistrationPaperController::class, 'uploadImage'])->name('uploadImage');
 
-
 Route::post('/vehicle/tax-token-form', [TaxTokenController::class, 'showInfo'])->name('showTokenInfo');
-
 
 Route::view('/license/success', 'pilot.success')->name('license.success');
 Route::view('/license/fail', 'pilot.fail')->name('license.fail');
 
 
-// -------------------------------------------
-// Profile Management Routes
-// -------------------------------------------
-Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
-Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
-Route::get('/profile', [ProfileController::class, 'index']);
+// Routes for passenger registration
+Route::view('/passenger-registration', 'passenger.passenger_registration');
+Route::post('/passenger/register', [PassengerController::class, 'store'])->name('passenger_register');
+Route::view('/pilot/fail', 'pilot.fail')->name('pilot.fail');
+
 
 // -------------------------------------------
 // Dashboard Routes (Role-Based Access)

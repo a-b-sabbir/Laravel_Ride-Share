@@ -2,12 +2,15 @@
 
 @section('content')
 
+
 <!-- Header Section -->
 <div class="header">
     <h1 class="text-primary">Sub-Admin Dashboard</h1>
     <p class="lead">Welcome, <strong>{{ $user_name }}</strong></p>
     <p>Email: <strong>{{ $getRecord->email }}</strong></p>
 </div>
+
+
 
 <!-- Summary Section (Improved Design) -->
 <div class="row">
@@ -30,9 +33,6 @@
             <div class="card-body">
                 <h5 class="card-title text-success">Unassigned Vehicles</h5>
                 <p class="card-text text-success display-4">{{ $total_unassigned_vehicles }}</p>
-                @if($total_unassigned_vehicles > 0)
-                <a href="{{ route('assign-pilot-to-vehicle.create') }}" class="btn btn-success btn-block">Assign Pilot</a>
-                @endif
             </div>
         </div>
     </div>
