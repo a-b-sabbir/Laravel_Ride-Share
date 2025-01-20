@@ -7,21 +7,38 @@ use App\Models\PilotVehicleAssignment;
 use App\Models\Vehicle\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PilotVehicleAssignmentController extends Controller
 {
     // Display form to assign a pilot to a vehicle
     public function create()
     {
+
         $pilots = Pilot::whereDoesntHave('assignments')->get(); // Get unassigned pilots
         $vehicles = Vehicle::whereDoesntHave('assignments')->get(); // Get unassigned vehicles
 
-        return view('sub_admin.assignment', compact('pilots', 'vehicles'));
+
+        // Dynamically determine the view based on the role
+        $role = Auth::user()->role->name;
+
+        switch ($role) {
+            case 'Super Admin':
+                return view('super_admin.assignment', compact('pilots', 'vehicles'));
+            case 'Admin':
+                return view('admin.assignment', compact('pilots', 'vehicles'));
+            case 'Sub-Admin':
+                return view('sub_admin.assignment', compact('pilots', 'vehicles'));
+            default:
+                abort(403, 'Unauthorized action.');
+        }
     }
 
     // Store a new pilot-vehicle assignment
     public function store(Request $request)
     {
+
+
         $validatedData = $request->validate([
             'pilot_id' => 'required|unique:pilot_vehicle_assignments,pilot_id',
             'vehicle_id' => 'required',
@@ -29,7 +46,8 @@ class PilotVehicleAssignmentController extends Controller
             'status' => 'required|in:Active,Suspended,Deactivated',
             'end_date' => 'nullable|date',
         ]);
-
+        $user = Auth::user();
+        
         PilotVehicleAssignment::create([
             'pilot_id' => $validatedData['pilot_id'],
             'vehicle_id' => $validatedData['vehicle_id'],
@@ -37,9 +55,21 @@ class PilotVehicleAssignmentController extends Controller
             'end_date' => $request->end_date ?: null,
             'status' => $validatedData['status'],
             'assignment_notes' => $request->assignment_notes,
+            'admin_id' => $user->id
         ]);
 
-        return redirect()->route('sub_admin.dashboard')->with('success', 'Pilot assigned successfully.');
+        $role = Auth::user()->role->name;
+
+        switch ($role) {
+            case 'Super Admin':
+                return redirect()->route('super_admin.dashboard')->with('success', 'Pilot assigned successfully.');
+            case 'Admin':
+                return redirect()->route('admin.dashboard')->with('success', 'Pilot assigned successfully');
+            case 'Sub-Admin':
+                return redirect()->route('sub_admin.dashboard')->with('success', 'Pilot assigned successfully');
+            default:
+                abort(403, 'Unauthorized Action');
+        }
     }
 
     // Update assignment status

@@ -159,12 +159,14 @@
 
                     <!-- Total Unassigned Pilots -->
                     <div class="col-md-3">
-                        <div class="card bg-danger text-white mt-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Unassigned Pilots</h5>
-                                <p class="card-text">67</p>
+                        <a href="{{ route   ('super_admin-assign-pilot-to-vehicle.create') }}" class="text-decoration-none">
+                            <div class="card bg-danger text-white mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Unassigned Pilots</h5>
+                                    <p class="card-text">67</p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <!-- Total Unassigned Pilots -->
@@ -178,7 +180,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card bg-success text-white text-center mt-3">
