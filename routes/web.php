@@ -7,6 +7,7 @@ use App\Http\Controllers\Pilot\LicenseController;
 use App\Http\Controllers\Pilot\PilotController;
 use App\Http\Controllers\PilotVehicleAssignmentController;
 use App\Http\Controllers\SuperAdmin\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Vehicle\RegistrationPaperController;
 use App\Http\Controllers\Vehicle\TaxTokenController;
 use App\Http\Controllers\Vehicle\VehicleController;
@@ -71,6 +72,8 @@ Route::post('/passenger/register', [PassengerController::class, 'store'])->name(
 // -------------------------------------------
 Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::get('super_admin/dashboard', [DashboardController::class, 'dashboard'])->name('super_admin.dashboard');
+    Route::get('users', [UserController::class, 'index'])->name('user-management');
+    Route::view('settings', 'super_admin.settings.settings')->name('settings');
     Route::get('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('super_admin-assign-pilot-to-vehicle.create');
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');
 

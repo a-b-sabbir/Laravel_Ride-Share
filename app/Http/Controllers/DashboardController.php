@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
         switch ($role) {
             case 'Super Admin':
-                $data['total_users'] = Pilot::count() + Passenger::count();
+                $data['total_passengers'] = Passenger::count();
                 $data['total_unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->count();
                 $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
                 $data['total_active_pilots'] = Pilot::where('account_status', 'Active')->count();
@@ -29,9 +29,7 @@ class DashboardController extends Controller
                 return view('super_admin.dashboard', $data);
 
             case 'Admin':
-                return view('admin.dashboard', $data);
 
-            case 'Sub-Admin':
                 $data['user_name'] = session('user_name', $user->name);
                 $data['pilots'] = Pilot::all();
                 $data['unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->get();
@@ -40,6 +38,17 @@ class DashboardController extends Controller
                 $data['total_unassigned_vehicles'] = Vehicle::whereDoesntHave('assignments')->count();
                 $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
 
+                return view('admin.dashboard', $data);
+
+            case 'Sub-Admin':
+                
+                $data['user_name'] = session('user_name', $user->name);
+                $data['pilots'] = Pilot::all();
+                $data['unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->get();
+                $data['assigned_pilots'] = PilotVehicleAssignment::all();
+                $data['total_unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->count();
+                $data['total_unassigned_vehicles'] = Vehicle::whereDoesntHave('assignments')->count();
+                $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
 
                 return view('sub_admin.dashboard', $data)->with('success', 'Welcome to the dashboard!');
 
@@ -50,7 +59,6 @@ class DashboardController extends Controller
 
                 $data['user_name'] = session('user_name', $user->name);
                 $data['passenger'] = Passenger::where('user_id', Auth::id())->firstOrFail();
-
 
                 return view('passenger.dashboard', $data);
 

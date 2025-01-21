@@ -2,15 +2,12 @@
 
 @section('content')
 
-
 <!-- Header Section -->
 <div class="header">
-    <h1 class="text-primary">Sub-Admin Dashboard</h1>
-    <p class="lead">Welcome, <strong>{{ $user_name }}</strong></p>
-    <p>Email: <strong>{{ $getRecord->email }}</strong></p>
+    <h1 class="text-primary">Welcome, {{ $user_name }}</h1>
+    <p class="lead"><strong>{{ $getRecord->email }}</strong></p>
+    <p class="lead">Here are some key metrics and controls for managing the platform:</p>
 </div>
-
-
 
 <!-- Summary Section (Improved Design) -->
 <div class="row">
@@ -99,6 +96,7 @@
                     <th>Pilot Name</th>
                     <th>Vehicle Number</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,6 +106,11 @@
                     <td>{{ $assigned_pilot->pilot->user->name }}</td>
                     <td>{{ $assigned_pilot->vehicle->vehicle_number }}</td>
                     <td>{{ $assigned_pilot->status }}</td>
+                    <td>
+                        <a href="{{ route('assign-pilot-to-vehicle.create', ['pilot_id' => $unassigned_pilot->id]) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-user-check"></i> Assign
+                        </a>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
