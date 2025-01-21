@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Passenger\Passenger;
 use App\Models\Pilot;
+use App\Models\PilotVehicleAssignment;
 use App\Models\User;
 use App\Models\Vehicle\Vehicle;
 use Illuminate\Http\Request;
@@ -20,6 +21,11 @@ class DashboardController extends Controller
 
         switch ($role) {
             case 'Super Admin':
+                $data['total_users'] = Pilot::count() + Passenger::count();
+                $data['total_unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->count();
+                $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
+                $data['total_active_pilots'] = Pilot::where('account_status', 'Active')->count();
+                $data['total_suspended_pilots'] = Pilot::where('account_status', 'Suspended')->count();
                 return view('super_admin.dashboard', $data);
 
             case 'Admin':
@@ -29,10 +35,11 @@ class DashboardController extends Controller
                 $data['user_name'] = session('user_name', $user->name);
                 $data['pilots'] = Pilot::all();
                 $data['unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->get();
-                $data['assigned_pilots'] = Pilot::whereHas('assignments')->get();
+                $data['assigned_pilots'] = PilotVehicleAssignment::all();
                 $data['total_unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->count();
                 $data['total_unassigned_vehicles'] = Vehicle::whereDoesntHave('assignments')->count();
                 $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
+
 
                 return view('sub_admin.dashboard', $data)->with('success', 'Welcome to the dashboard!');
 
@@ -43,7 +50,7 @@ class DashboardController extends Controller
 
                 $data['user_name'] = session('user_name', $user->name);
                 $data['passenger'] = Passenger::where('user_id', Auth::id())->firstOrFail();
-                
+
 
                 return view('passenger.dashboard', $data);
 

@@ -48,36 +48,38 @@
     </div>
 </div>
 
-<!-- Pilots Section -->
-<div class="my-4">
-    <h3>Assigned Pilots</h3>
-    @if($assigned_pilots->isEmpty())
-    <p>No assigned pilots available.</p>
-    @else
-    <ul class="list-group">
-        @foreach($assigned_pilots as $index => $assigned_pilot)
-        <li class="list-group-item">
-            <strong>{{ $index + 1 }}. {{ $assigned_pilot->user->name }}</strong>
-        </li>
-        @endforeach
-    </ul>
-    @endif
-</div>
-
 <!-- Unassigned Pilots Section with Assign Button -->
 <div class="my-4">
     <h3>Unassigned Pilots</h3>
     @if($unassigned_pilots->isEmpty())
-    <p>No unassigned pilots available.</p>
+    <div class="alert alert-warning" role="alert">
+        No unassigned pilots available.
+    </div>
     @else
-    <ul class="list-group">
-        @foreach($unassigned_pilots as $index => $unassigned_pilot)
-        <li class="list-group-item d-flex justify-content-between">
-            <span><strong>{{ $index + 1 }}. {{ $unassigned_pilot->user->name }}</strong></span>
-            <a href="{{ route('assign-pilot-to-vehicle.create', ['pilot_id' => $unassigned_pilot->id]) }}" class="btn btn-primary btn-sm">Assign</a>
-        </li>
-        @endforeach
-    </ul>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Pilot Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($unassigned_pilots as $index => $unassigned_pilot)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $unassigned_pilot->user->name }}</td>
+                    <td>
+                        <a href="{{ route('assign-pilot-to-vehicle.create', ['pilot_id' => $unassigned_pilot->id]) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-user-check"></i> Assign
+                        </a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     @endif
 </div>
 
@@ -85,19 +87,36 @@
 <div class="my-4">
     <h3>Assigned Pilots</h3>
     @if($assigned_pilots->isEmpty())
-    <p>No assigned pilots available.</p>
+    <div class="alert alert-info" role="alert">
+        No assigned pilots available.
+    </div>
     @else
-    <ul class="list-group">
-        @foreach($assigned_pilots as $index => $assigned_pilot)
-        <li class="list-group-item">
-            <strong>{{ $index + 1 }}. {{ $assigned_pilot->user->name }}</strong>
-        </li>
-        @endforeach
-    </ul>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Pilot Name</th>
+                    <th>Vehicle Number</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($assigned_pilots as $index => $assigned_pilot)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $assigned_pilot->pilot->user->name }}</td>
+                    <td>{{ $assigned_pilot->vehicle->vehicle_number }}</td>
+                    <td>{{ $assigned_pilot->status }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     @endif
 </div>
 
-<!-- Action Buttons -->
+
 <div class="text-center my-4">
     <a href="{{ route('assign-pilot-to-vehicle.create') }}" class="btn btn-primary">Assign Pilot to Vehicle</a>
     <a href="{{ url('logout') }}" class="btn btn-danger">Logout</a>

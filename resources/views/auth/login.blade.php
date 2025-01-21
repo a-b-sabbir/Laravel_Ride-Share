@@ -34,7 +34,7 @@
                 </div>
 
                 <br>
-                <label>Not A Member?</label> <a href="{{url('/registration')}}">Join now</a>
+                <label>Not A Member?</label> <a href="{{url('/chooseregistration')}}">Join now</a>
             </div>
         </div>
     </div>
