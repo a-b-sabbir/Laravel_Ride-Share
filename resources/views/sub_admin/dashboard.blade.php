@@ -59,6 +59,8 @@
                 <tr>
                     <th>#</th>
                     <th>Pilot Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -67,9 +69,15 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $unassigned_pilot->user->name }}</td>
+                    <td>{{ $unassigned_pilot->user->phone_number }}</td>
+                    <td>{{ $unassigned_pilot->user->email }}</td>
+
                     <td>
                         <a href="{{ route('assign-pilot-to-vehicle.create', ['pilot_id' => $unassigned_pilot->id]) }}" class="btn btn-success btn-sm">
                             <i class="fas fa-user-check"></i> Assign
+                        </a>
+                        <a href="{{ route('assign-pilot-to-vehicle.create', ['pilot_id' => $unassigned_pilot->id]) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-user-check"></i> View
                         </a>
                     </td>
                 </tr>

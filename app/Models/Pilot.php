@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Pilot\PilotLicense;
 use Illuminate\Database\Eloquent\Model;
 
 class Pilot extends Model
@@ -24,11 +25,11 @@ class Pilot extends Model
 
     public function license()
     {
-        return $this->hasOne('PilotLicense::class');
+        return $this->hasOne(PilotLicense::class);
     }
 
     public function assignments()
     {
-        return $this->hasMany(PilotVehicleAssignment::class, 'pilot_id');
+        return $this->hasOne(PilotVehicleAssignment::class);
     }
 }

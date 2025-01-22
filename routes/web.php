@@ -6,6 +6,7 @@ use App\Http\Controllers\Passenger\PassengerController;
 use App\Http\Controllers\Pilot\LicenseController;
 use App\Http\Controllers\Pilot\PilotController;
 use App\Http\Controllers\PilotVehicleAssignmentController;
+use App\Http\Controllers\SuperAdmin\PilotController as SuperAdminPilotController;
 use App\Http\Controllers\SuperAdmin\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Vehicle\RegistrationPaperController;
@@ -76,6 +77,7 @@ Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::view('settings', 'super_admin.settings.settings')->name('settings');
     Route::get('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('super_admin-assign-pilot-to-vehicle.create');
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');
+    Route::get('super_admin/assign-pilot-to-vehicle/{id}', [SuperAdminPilotController::class, 'show'])->name('super_admin-assign-pilot-to-vehicle.show');
 
     Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
 });

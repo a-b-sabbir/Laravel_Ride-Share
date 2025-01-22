@@ -18,6 +18,6 @@ class Vehicle extends Model
 
     public function assignments()
     {
-        return $this->hasMany(PilotVehicleAssignment::class, 'vehicle_id');
+        return $this->hasOne(PilotVehicleAssignment::class, 'vehicle_id');
     }
 }

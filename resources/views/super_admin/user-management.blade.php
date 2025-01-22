@@ -94,8 +94,7 @@
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>
                         <td>{{ $record->account_status }}</td>
-                        <td>
-                            <a href="" class="btn btn-primary btn-sm">
+                        <td><a href="" class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                             <a href="" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
@@ -147,13 +146,15 @@
                         <td>{{ $record->user->phone_number }}</td>
                         <td>{{ $record->account_status }}</td>
                         <td>
+                            <a href="{{ route('super_admin-assign-pilot-to-vehicle.show', $record->id) }}" class="btn btn-success btn-sm">
+                                <i class="fas fa-user-check"></i> View
+                            </a>
                             <a href="" class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                             <a href="" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
                                 <i class="fas fa-trash"></i> Delete
                             </a>
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>

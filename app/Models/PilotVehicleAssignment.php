@@ -18,12 +18,12 @@ class PilotVehicleAssignment extends Model
     ];
     public function pilot()
     {
-        return $this->belongsTo(Pilot::class, 'pilot_id');
+        return $this->belongsTo(Pilot::class);
     }
 
     // Define the relationship with the Vehicle model
     public function vehicle()
     {
-        return $this->belongsTo(Vehicle::class, 'vehicle_id');
+        return $this->belongsTo(Vehicle::class);
     }
 }
