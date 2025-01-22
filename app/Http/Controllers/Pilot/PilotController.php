@@ -32,46 +32,57 @@ class PilotController extends Controller
             DB::beginTransaction(); //Start Database Transaction
 
             // Handle profile photo upload if provided
-            $profilePhotoPath = null;
-            if (isset($validatedData['profile_photo'])) {
-                $profilePhotoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+            $profilePhotoPath = $request->hasFile('profile_photo')
+                ? $request->file('profile_photo')->store('profile_photos', 'public')
+                : null;
+
+            // Handle NID photo upload if provided
+            $nidImagePath = $request->hasFile('nid_image')
+                ? $request->file('nid_image')->store('nid_images', 'public')
+                : null;
+
+
+            // Check if the user exists
+            $user = User::firstOrCreate(
+                [$validatedData['phone_number']],
+                [
+                    'profile_photo' => $profilePhotoPath,
+                    'name' => $validatedData['name'],
+                    'email' => $validatedData['email'],
+                    'password' => bcrypt($validatedData['password']),
+                    'role_id' => 4
+                ]
+            );
+            dd($validatedData);
+
+            // Check if the pilot already exists
+            $pilot = Pilot::firstOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'nid' => $validatedData['nid'],
+                    'nid_image' => $nidImagePath,
+                    'address' => $validatedData['address'],
+                    'emergency_contact_name' => $validatedData['emergency_contact_name'],
+                    'emergency_contact_number' => $validatedData['emergency_contact_number'],
+                    'relation_with_emergency_contact' => $validatedData['relation_with_emergency_contact'],
+                    'preferred_shift' => $validatedData['preferred_shift'],
+                    'registration_step' => 'Driving License'
+                ]
+            );
+
+
+            if ($pilot->registration_step === 'Driving License') {
+                DB::commit();
+                return redirect()->route('pilot_license', ['pilot_id' => $pilot->id])->with('success', 'Pilot basic registration successful. Please proceed to the license step.');
+            } elseif ($pilot->registration_step === 'Vehicle Basic') {
+                DB::commit();
+                return redirect()->route('vehicle.register')->with('success', 'Pilot License registration successful. Please submit the vehicle basic form.');
             }
-
-            // Handle NID image upload if provided
-            $nidImagePath = null;
-            if (isset($validatedData['nid_image'])) {
-                $nidImagePath = $request->file('nid_image')->store('nid_images', 'public');
-            }
-
-
-            $user = User::create([
-                'profile_photo' => $profilePhotoPath,
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'phone_number' => $validatedData['phone_number'],
-                'password' => bcrypt($validatedData['password']),
-                'role_id' => 4
-            ]);
-
-
-            $pilot = Pilot::create([
-                'user_id' => $user->id,
-                'nid' => $validatedData['nid'],
-                'nid_image' => $nidImagePath,
-                'address' => $validatedData['address'],
-                'emergency_contact_name' => $validatedData['emergency_contact_name'],
-                'emergency_contact_number' => $validatedData['emergency_contact_number'],
-                'relation_with_emergency_contact' => $validatedData['relation_with_emergency_contact'],
-                'preferred_shift' => $validatedData['preferred_shift'],
-            ]);
 
             DB::commit();
-
-            // Redirect to the success page with a success message
-            return redirect()->route('pilot_license', ['pilot_id' => $pilot->id])->with('success', 'Pilot basic registration successful. Please fill up the current form.');
+            return redirect()->route('pilot_license', ['pilot_id' => $pilot->id])->with('success', 'Pilot basic registration successful. Please proceed to the license step.');
         } catch (\Exception $e) {
             DB::rollBack();
-            // Redirect to the fail page with an error message
             return redirect()->route('pilot.fail')->with('error', 'Pilot registration failed. Please try again.');
         }
     }

@@ -16,6 +16,7 @@ class Pilot extends Model
         'emergency_contact_number',
         'relation_with_emergency_contact',
         'preferred_shift',
+        'registration_step'
     ];
 
     public function user()
