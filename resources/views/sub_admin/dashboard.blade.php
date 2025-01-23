@@ -76,7 +76,7 @@
                         <a href="{{ route('assign-pilot-to-vehicle.create', ['pilot_id' => $unassigned_pilot->id]) }}" class="btn btn-success btn-sm">
                             <i class="fas fa-user-check"></i> Assign
                         </a>
-                        <a href="{{ route('assign-pilot-to-vehicle.create', ['pilot_id' => $unassigned_pilot->id]) }}" class="btn btn-success btn-sm">
+                        <a href="{{ route('pilot.show', ['id' => $unassigned_pilot->id]) }}" class="btn btn-success btn-sm">
                             <i class="fas fa-user-check"></i> View
                         </a>
                     </td>
@@ -115,8 +115,8 @@
                     <td>{{ $assigned_pilot->vehicle->vehicle_number }}</td>
                     <td>{{ $assigned_pilot->status }}</td>
                     <td>
-                        <a href="{{ route('assign-pilot-to-vehicle.create', ['pilot_id' => $unassigned_pilot->id]) }}" class="btn btn-success btn-sm">
-                            <i class="fas fa-user-check"></i> Assign
+                        <a href="{{ route('pilot.show', ['id' => $assigned_pilot->id]) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-user-check"></i> View
                         </a>
                     </td>
                 </tr>

@@ -17,7 +17,7 @@
                 <div class="card-body text-center">
                     <h3 class="card-title">Pilot Registration</h3>
                     <p class="card-text">Want to offer rides? Register as a Pilot here.</p>
-                    <a href='/pilot-registration' class="btn btn-secondary w-100">Register as Pilot</a>
+                    <a href='/pilot-phone' class="btn btn-secondary w-100">Register as Pilot</a>
                 </div>
             </div>
         </div>

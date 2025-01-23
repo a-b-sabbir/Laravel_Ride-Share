@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Super Admin Dashboard')</title>
+    <title>@yield('title', 'Sub Admin Dashboard')</title>
     <!--custom CSS -->
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 

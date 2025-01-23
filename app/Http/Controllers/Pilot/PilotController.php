@@ -5,11 +5,46 @@ namespace App\Http\Controllers\Pilot;
 use App\Http\Controllers\Controller;
 use App\Models\Pilot;
 use App\Models\User;
+use App\SMSService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PilotController extends Controller
 {
+
+    protected $smsService;
+
+    public function __construct(SMSService $smsService)
+    {
+        $this->smsService = $smsService; // Inject the service
+    }
+
+    public function sendOtp(Request $request)
+    {
+
+        $validated = $request->validate([
+            'phone_number' => 'required|regex:/^\+?\d{10,15}$/',
+        ]);
+        $phoneNumber = $validated['phone_number']; // Get the phone number
+        $otp = rand(100000, 999999); // Generate OTP
+        $message = "Your OTP is: $otp"; // OTP message
+
+        // Generate unique client transaction ID (can use timestamp or random string)
+        $clientTransId = uniqid('OTP-', true);
+        $billMsisdn = '01313704545'; // This is the billing MSISDN
+        
+        // Call the sendOTP method from the service
+        $response = $this->smsService->sendOTP([$phoneNumber], $message, $clientTransId, $billMsisdn);
+        dd($response);
+        // Handle the response
+        if ($response['statusInfo']['statusCode'] == 1000) {
+            return response()->json(['message' => 'OTP sent successfully.']);
+        } else {
+            return response()->json(['error' => 'Failed to send OTP.'], 500);
+        }
+    }
+
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([

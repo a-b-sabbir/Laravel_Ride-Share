@@ -20,7 +20,7 @@
                     <a class="nav-link" href="#">Notifications</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('profile') }}">Profile</a>
+                    <a class="nav-link" href="{{ route('super-admin.profile.show') }}">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('logout') }}">Logout</a>
