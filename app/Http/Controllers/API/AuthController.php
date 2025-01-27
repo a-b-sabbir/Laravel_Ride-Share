@@ -77,15 +77,15 @@ class AuthController extends Controller
             // Redirect based on role for web-based login
             switch ($user->role_id) {
                 case 1: // Super Admin
-                    return redirect()->intended('super_admin/dashboard');
+                    return redirect()->intended('roles/super_admin/dashboard');
                 case 2: // Admin
-                    return redirect()->intended('admin/dashboard');
+                    return redirect()->intended('roles/admin/dashboard');
                 case 3: // Sub Admin
-                    return redirect()->intended('sub_admin/dashboard');
+                    return redirect()->intended('roles/sub_admin/dashboard');
                 case 4: // Pilot
-                    return redirect()->intended('pilot/dashboard');
+                    return redirect()->intended('roles/pilot/dashboard');
                 case 5: // Passenger
-                    return redirect()->intended('passenger/dashboard');
+                    return redirect()->intended('roles/passenger/dashboard');
                 default:
                     Auth::logout();
                     return redirect()->back()->with('error', 'Invalid role.');

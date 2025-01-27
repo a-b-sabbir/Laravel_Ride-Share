@@ -15,6 +15,6 @@ class PilotController extends Controller
         $pilot = Pilot::with(['user', 'license', 'assignments.vehicle'])->findOrFail($id);
 
 
-        return view('super_admin.pilots_info.show', compact('pilot'));
+        return view('roles.super_admin.pilots_info.show', compact('pilot'));
     }
 }

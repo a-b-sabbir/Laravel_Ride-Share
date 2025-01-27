@@ -32,7 +32,7 @@ class PilotController extends Controller
         // Generate unique client transaction ID (can use timestamp or random string)
         $clientTransId = uniqid('OTP-', true);
         $billMsisdn = '01313704545'; // This is the billing MSISDN
-        
+
         // Call the sendOTP method from the service
         $response = $this->smsService->sendOTP([$phoneNumber], $message, $clientTransId, $billMsisdn);
         dd($response);

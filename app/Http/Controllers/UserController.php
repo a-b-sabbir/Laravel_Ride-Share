@@ -30,7 +30,7 @@ class UserController extends Controller
                 $data['assigned_pilots'] = Pilot::whereHas('assignments')->get();
                 $data['total_pilots'] = Pilot::count();
                 $data['active_pilots'] = Pilot::where('account_status', 'Active')->count();
-                return view('super_admin.user-management', $data);
+                return view('roles.super_admin.user-management', $data);
                 break;
 
             default:
@@ -38,6 +38,6 @@ class UserController extends Controller
                 break;
         }
 
-        return view('super_admin.user-management', $data);
+        return view('roles.super_admin.user-management', $data);
     }
 }

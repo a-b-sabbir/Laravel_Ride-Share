@@ -63,7 +63,9 @@
         </div>
     </div>
 
+
     <!-- Unassigned Pilot List -->
+
     <div class="my-4">
         <div class="row">
             <div class="d-flex justify-content-between align-items-center">
@@ -115,6 +117,7 @@
 
 
     <!-- Assigned Pilot List -->
+
     <div class="my-4">
         <div class="row">
             <div class="d-flex justify-content-between align-items-center">
@@ -133,6 +136,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
+                        <th>Approval</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -144,6 +148,15 @@
                         <td>{{ $record->user->name }}</td>
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>
+                        <td>
+                            @if($record->user->approval == false)
+                            Not Approved
+                            @else
+                            Approved
+                            @endif
+                        </td>
+
+                        </td>
                         <td>{{ $record->account_status }}</td>
                         <td>
                             <a href="{{ route('super_admin-assign-pilot-to-vehicle.show', $record->id) }}" class="btn btn-success btn-sm">

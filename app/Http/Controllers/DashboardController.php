@@ -26,7 +26,7 @@ class DashboardController extends Controller
                 $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
                 $data['total_active_pilots'] = Pilot::where('account_status', 'Active')->count();
                 $data['total_suspended_pilots'] = Pilot::where('account_status', 'Suspended')->count();
-                return view('super_admin.dashboard', $data);
+                return view('roles.super_admin.dashboard', $data);
 
             case 'Admin':
 
@@ -38,7 +38,7 @@ class DashboardController extends Controller
                 $data['total_unassigned_vehicles'] = Vehicle::whereDoesntHave('assignments')->count();
                 $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
 
-                return view('admin.dashboard', $data);
+                return view('roles.admin.dashboard', $data);
 
             case 'Sub-Admin':
                 
@@ -50,17 +50,17 @@ class DashboardController extends Controller
                 $data['total_unassigned_vehicles'] = Vehicle::whereDoesntHave('assignments')->count();
                 $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
 
-                return view('sub_admin.dashboard', $data)->with('success', 'Welcome to the dashboard!');
+                return view('roles.sub_admin.dashboard', $data)->with('success', 'Welcome to the dashboard!');
 
             case 'Pilot':
-                return view('pilot.dashboard', $data);
+                return view('roles.pilot.dashboard', $data);
 
             case 'Passenger':
 
                 $data['user_name'] = session('user_name', $user->name);
                 $data['passenger'] = Passenger::where('user_id', Auth::id())->firstOrFail();
 
-                return view('passenger.dashboard', $data);
+                return view('roles.passenger.dashboard', $data);
 
             default:
                 abort(403, 'Unauthorized action.');

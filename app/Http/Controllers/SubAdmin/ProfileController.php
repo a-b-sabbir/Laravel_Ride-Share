@@ -17,6 +17,6 @@ class ProfileController extends Controller
         $data['email'] = $user->email;
 
 
-        return view('sub_admin.profile.profile', $data);
+        return view('roles.sub_admin.profile.profile', $data);
     }
 }

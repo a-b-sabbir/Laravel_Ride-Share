@@ -46,19 +46,19 @@ Route::get('logout', [AuthController::class, 'logout']);
 // Pilot Routes
 // -------------------------------------------
 
-Route::view('/pilot-phone', 'pilot.pilot_phone');
-Route::post('/send-otp', [PilotController::class, 'sendOtp'])->name('send-otp');
+// Route::view('/pilot-phone', 'pilot.pilot_phone');
+// Route::post('/send-otp', [PilotController::class, 'sendOtp'])->name('send-otp');
 
-// Route to show OTP input page
-Route::get('/verify-otp', [OtpController::class, 'showOtpForm'])->name('otp.form');
+// // Route to show OTP input page
+// Route::get('/verify-otp', [OtpController::class, 'showOtpForm'])->name('otp.form');
 
-// Route to handle OTP submission
-Route::post('/verify-otp', [OtpController::class, 'verifyOtp'])->name('otp.verify');
+// // Route to handle OTP submission
+// Route::post('/verify-otp', [OtpController::class, 'verifyOtp'])->name('otp.verify');
 
 
-Route::view('/pilot-registration', 'pilot.pilot_registration');
+Route::view('/pilot-registration', 'roles.pilot.pilot_registration');
 Route::post('/pilot/register', [PilotController::class, 'store'])->name('pilot_register');
-Route::view('/pilot/fail', 'pilot.fail')->name('pilot.fail');
+Route::view('/pilot/fail', 'roles.pilot.fail')->name('pilot.fail');
 
 Route::get('/pilot/license', [LicenseController::class, 'showLicenseForm'])->name('pilot_license');
 Route::post('/upload-license', [LicenseController::class, 'uploadLicense'])->name('license.upload');
@@ -87,9 +87,9 @@ Route::post('/passenger/register', [PassengerController::class, 'store'])->name(
 // Dashboard Routes
 // -------------------------------------------
 Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
-    Route::get('super_admin/dashboard', [DashboardController::class, 'dashboard'])->name('super_admin.dashboard');
+    Route::get('roles/super_admin/dashboard', [DashboardController::class, 'dashboard'])->name('super_admin.dashboard');
     Route::get('users', [UserController::class, 'index'])->name('user-management');
-    Route::view('settings', 'super_admin.settings.settings')->name('settings');
+    Route::view('settings', 'roles.super_admin.settings.settings')->name('settings');
     Route::get('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('super_admin-assign-pilot-to-vehicle.create');
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');
     Route::get('super_admin/assign-pilot-to-vehicle/{id}', [SuperAdminPilotController::class, 'show'])->name('super_admin-assign-pilot-to-vehicle.show');
@@ -98,13 +98,13 @@ Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
 });
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-    Route::get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('roles/admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('assign-pilot-to-vehicle.create');
     Route::post('admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('assign-pilot-to-vehicle.store');
 });
 
 Route::middleware(['auth', SubAdminMiddleware::class])->group(function () {
-    Route::get('sub_admin/dashboard', [DashboardController::class, 'dashboard'])->name('sub_admin.dashboard');
+    Route::get('roles/sub_admin/dashboard', [DashboardController::class, 'dashboard'])->name('sub_admin.dashboard');
     Route::get('sub_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('assign-pilot-to-vehicle.create');
     Route::post('sub_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('assign-pilot-to-vehicle.store');
     Route::get('sub-admin/pilot/{id}', [SubAdminPilotController::class, 'show'])->name('pilot.show');

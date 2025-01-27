@@ -24,11 +24,11 @@ class PilotVehicleAssignmentController extends Controller
 
         switch ($role) {
             case 'Super Admin':
-                return view('super_admin.assignment', compact('pilots', 'vehicles'));
+                return view('roles.super_admin.assignment', compact('pilots', 'vehicles'));
             case 'Admin':
-                return view('admin.assignment', compact('pilots', 'vehicles'));
+                return view('roles.admin.assignment', compact('pilots', 'vehicles'));
             case 'Sub-Admin':
-                return view('sub_admin.assignment', compact('pilots', 'vehicles'));
+                return view('roles.sub_admin.assignment', compact('pilots', 'vehicles'));
             default:
                 abort(403, 'Unauthorized action.');
         }
@@ -62,11 +62,11 @@ class PilotVehicleAssignmentController extends Controller
 
         switch ($role) {
             case 'Super Admin':
-                return redirect()->route('super_admin.dashboard')->with('success', 'Pilot assigned successfully.');
+                return redirect()->route('roles.super_admin.dashboard')->with('success', 'Pilot assigned successfully.');
             case 'Admin':
-                return redirect()->route('admin.dashboard')->with('success', 'Pilot assigned successfully');
+                return redirect()->route('roles.admin.dashboard')->with('success', 'Pilot assigned successfully');
             case 'Sub-Admin':
-                return redirect()->route('sub_admin.dashboard')->with('success', 'Pilot assigned successfully');
+                return redirect()->route('roles.sub_admin.dashboard')->with('success', 'Pilot assigned successfully');
             default:
                 abort(403, 'Unauthorized Action');
         }
@@ -88,6 +88,6 @@ class PilotVehicleAssignmentController extends Controller
 
         $assignment->save();
 
-        return redirect()->route('sub_admin.dashboard')->with('success', 'Assignment status updated successfully.');
+        return redirect()->route('roles.sub_admin.dashboard')->with('success', 'Assignment status updated successfully.');
     }
 }
