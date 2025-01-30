@@ -3,6 +3,7 @@
 namespace App\Models\Vehicle;
 
 use App\Models\PilotVehicleAssignment;
+use App\Models\Vehicle\Bike\RegistrationCertificate;
 use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
@@ -13,11 +14,17 @@ class Vehicle extends Model
         'vehicle_number',
         'brand',
         'make',
-        'model'
+        'model',
+        'registration_step'
     ];
 
     public function assignments()
     {
         return $this->hasOne(PilotVehicleAssignment::class, 'vehicle_id');
+    }
+
+    public function registrationCertificate()
+    {
+        return $this->hasOne(RegistrationCertificate::class, 'vehicle_id');
     }
 }

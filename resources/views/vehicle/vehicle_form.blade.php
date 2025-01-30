@@ -21,7 +21,7 @@
                         <center>Vehicle Info Form</center>
                     </h4>
                     <div class="mb-3">
-                        <form action="{{ route('uploadVehicle') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="{{ route('vehicle.upload') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
 
                             <!-- Type -->

@@ -13,28 +13,23 @@ use thiagoalessio\TesseractOCR\TesseractOCR;
 class LicenseController extends Controller
 {
 
-    public function showLicenseForm(Request $request)
+    public function showLicenseForm($pilotId)
     {
-        // Get the pilot_id from the query parameter in the URL
-        $pilotId = $request->query('pilot_id');
+        $pilot = Pilot::find($pilotId);
 
-        // Optionally, validate that pilot_id exists
-        if (!$pilotId) {
-            return redirect()->route('pilot.fail')->with('error', 'Pilot ID is missing.');
+        if (!$pilot) {
+            return redirect()->route('pilot.fail')->with('error', 'Pilot not found. Please ensure the correct ID.');
         }
-
-        // Retrieve the pilot's details using the pilot_id
-        $pilot = Pilot::findOrFail($pilotId);
-
         // Pass the pilot_id to the view
-        return view('pilot.pilot_license', ['pilotId' => $pilotId]);
+        return view('roles.pilot.license_form', ['pilotId' => $pilotId]);
     }
 
 
     public function uploadLicense(Request $request)
     {
+
         $validatedData = $request->validate([
-            'pilot_id' => 'required|exists:pilots,id|unique:pilot_licenses,pilot_id', // Ensure pilot_id exists in pilots table
+            'pilot_id' => 'required|unique:pilot_licenses,pilot_id',
             'license_photo' => 'required|image|mimes:jpg,png,jpeg|max:5000',
             'type' => 'required|in:Professional,Non-Professional',
             'name' => 'required|string|min:3|max:100',
@@ -48,14 +43,17 @@ class LicenseController extends Controller
             'ref_no' => 'nullable|max:20',
             'issuing_authority' => 'required',
         ]);
-        
+
         try {
             DB::beginTransaction();
 
             $licensePhotoPath = $request->file('license_photo')->store('license_photos', 'public');
 
+            $pilot = Pilot::find($validatedData['pilot_id']);
 
-            $pilot = Pilot::where('id', $validatedData['pilot_id'])->firstOrfail();
+            if (!$pilot) {
+                return redirect()->back()->with('error', 'Pilot not found.');
+            }
 
             PilotLicense::create([
                 'pilot_id' => $pilot->id,
@@ -73,53 +71,19 @@ class LicenseController extends Controller
                 'issuing_authority' => $validatedData['issuing_authority']
             ]);
 
+
+            // Update the registration_step in Pilot model
+            $pilot->registration_step = 'Basic Vehicle Info'; // Update to the next step
+            $pilot->save(); // Save the updated pilot record
+
             DB::commit();
 
-            return redirect()->route('vehicle.register')->with('success', 'Pilot license update successful. Please fill up the current form.');
+            return view('vehicle.vehicle_form')->with('success', 'Pilot license update successful. Please fill up the current form.');
         } catch (\Exception $e) {
             DB::rollBack();
 
             return redirect()->route('pilot.fail')
                 ->with('error', 'Error: ' . $e->getMessage());
         }
-
-        //     // Handle the uploaded license image
-        //     $license_image_path = $request->file('license_photo')->store('license_photos', 'public');
-
-        //     // Debugging: Log the stored path
-        //     if (!file_exists(storage_path('app/public/' . $license_image_path))) {
-        //         dd('Image not saved: ' . storage_path('app/public/' . $license_image_path));
-        //     }
-
-        //     // Use Tesseract OCR to extract details from the image
-        //     $licenseDetails = $this->extractLicenseDetails($license_image_path);
-
-        //     // Pass the extracted details to the view
-        //     return view('pilot.license_form', [
-        //         'licenseDetails' => $licenseDetails
-        //     ]);
-        // }
-
-        // private function extractLicenseDetails($imagePath)
-        // {
-        //     // Using Tesseract OCR to extract text from the image
-        //     $licenseText = (new TesseractOCR(storage_path('app/public/' . $imagePath)))->run();
-        //     dd($licenseText);
-        //     // Extract specific details from the OCR result (you may need to adjust the logic)
-        //     $licenseDetails = [
-        //         'license_number' => $this->extractData($licenseText, 'License No.'),
-        //         'name' => $this->extractData($licenseText, 'Name'),
-        //         'blood_group' => $this->extractData($licenseText, 'Blood Group'),
-        //     ];
-
-        //     return $licenseDetails;
-        // }
-
-        // private function extractData($text, $label)
-        // {
-        //     // Make matching case-insensitive and more flexible
-        //     preg_match("/$label\s*:\s*(.+)/i", $text, $matches);
-        //     return trim($matches[1] ?? '');
-        // }
     }
 }

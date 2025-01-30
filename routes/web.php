@@ -12,7 +12,7 @@ use App\Http\Controllers\SuperAdmin\PilotController as SuperAdminPilotController
 use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
 use App\Http\Controllers\SubAdmin\ProfileController as SubAdminProfileController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Vehicle\RegistrationPaperController;
+use App\Http\Controllers\Vehicle\Bike\RegistrationCertificateController;
 use App\Http\Controllers\Vehicle\TaxTokenController;
 use App\Http\Controllers\Vehicle\VehicleController;
 use App\Http\Middleware\AdminMiddleware;
@@ -56,26 +56,27 @@ Route::get('logout', [AuthController::class, 'logout']);
 // Route::post('/verify-otp', [OtpController::class, 'verifyOtp'])->name('otp.verify');
 
 
+// Route for pilot registration
+Route::post('/pilot/register', [PilotController::class, 'register'])->name('pilot.register');
+
 Route::view('/pilot-registration', 'roles.pilot.pilot_registration');
-Route::post('/pilot/register', [PilotController::class, 'store'])->name('pilot_register');
 Route::view('/pilot/fail', 'roles.pilot.fail')->name('pilot.fail');
 
-Route::get('/pilot/license', [LicenseController::class, 'showLicenseForm'])->name('pilot_license');
+// Route for license step
+Route::get('/pilot/step/license/{pilot}', [LicenseController::class, 'showLicenseForm'])->name('show.pilot.license.form');
 Route::post('/upload-license', [LicenseController::class, 'uploadLicense'])->name('license.upload');
-Route::view('/license/success', 'pilot.success')->name('license.success');
-Route::view('/license/fail', 'pilot.fail')->name('license.fail');
+
 
 // -------------------------------------------
 // Vehicle Routes
 // -------------------------------------------
-Route::view('/vehicle', 'vehicle.vehicle_form')->name('vehicle.register');
-Route::post('/vehicle/register', [VehicleController::class, 'store'])->name('uploadVehicle');
+Route::view('/vehicle/basic', 'vehicle.vehicle_form')->name('show.vehicle.form');
 
-Route::view('/vehicle/registration-photo', 'vehicle.registration_paper_photo')->name('registration_paper_photo');
-Route::view('/vehicle/registration-form', 'vehicle.registration_paper_form')->name('registration_paper_form');
-Route::post('vehicle/registration-paper', [RegistrationPaperController::class, 'uploadImage'])->name('uploadImage');
+Route::post('/vehicle/basic/upload', [VehicleController::class, 'uploadVehicle'])->name('vehicle.upload');
 
-Route::post('/vehicle/tax-token-form', [TaxTokenController::class, 'showInfo'])->name('showTokenInfo');
+Route::get('/vehicle/registration-paper/{vehicle}', [RegistrationCertificateController::class, 'showRegistrationCertificateForm'])->name('vehicle.registrationPaper');
+Route::post('vehicle/registration-paper/upload', [RegistrationCertificateController::class, 'uploadRegistrationCertificate'])->name('upload.registration-certificate');
+
 
 // -------------------------------------------
 // Passenger Routes
@@ -93,7 +94,6 @@ Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::get('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('super_admin-assign-pilot-to-vehicle.create');
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');
     Route::get('super_admin/assign-pilot-to-vehicle/{id}', [SuperAdminPilotController::class, 'show'])->name('super_admin-assign-pilot-to-vehicle.show');
-
     Route::get('super-admin/profile', [SuperAdminProfileController::class, 'show'])->name('super-admin.profile.show');
 });
 

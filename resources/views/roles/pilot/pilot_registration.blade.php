@@ -10,7 +10,7 @@
                         <center>Pilot Registration</center>
                     </h4>
                     <div class="mb-3">
-                        <form action="{{ route('pilot_register') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="{{ route('pilot.register') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
                             <!-- Profile Photo -->
                             <div class="mb-3">

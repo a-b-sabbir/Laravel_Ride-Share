@@ -25,6 +25,19 @@
                             @csrf
 
 
+                            <!-- Tax Token Photo -->
+                            <div class="mb-3">
+                                <label for="tax_token_photo" class="form-label fw-bold required">Tax Token Photo</label>
+                                <input type="file" class="form-control" name="tax_token_photo" id="tax_token_photo">
+
+                                @if ($errors->has('tax_token_photo'))
+                                <div class="text-danger">
+                                    <small>{{ $errors->first('tax_token_photo') }}</small>
+                                </div>
+                                @endif
+                            </div>
+
+
                             <!-- Registration Number -->
                             <div class="mb-3">
                                 <label for="registration_number" class="form-label">Registration Number</label>
