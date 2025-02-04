@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('vehicle_tax_token', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('vehicle_id')->index();
+            $table->string('tax_token_photo');
             $table->date('print_date');
             $table->string('registration_number');
             $table->date('registration_date');

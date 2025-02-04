@@ -40,7 +40,7 @@ class LicenseController extends Controller
             'license_number' => 'required|unique:pilot_licenses,license_number|min:5|max:20',
             'issue_date' => 'required|date|before_or_equal:today',
             'expiry_date' => 'required|date|after:today',
-            'ref_no' => 'nullable|max:20',
+            'ref_no' => 'nullable|int',
             'issuing_authority' => 'required',
         ]);
 

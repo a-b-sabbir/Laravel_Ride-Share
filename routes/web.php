@@ -42,6 +42,7 @@ Route::post('/login_post', [AuthController::class, 'login_post']);
 Route::post('/forgot', [AuthController::class, 'forgot']);
 Route::get('logout', [AuthController::class, 'logout']);
 
+
 // -------------------------------------------
 // Pilot Routes
 // -------------------------------------------
@@ -73,6 +74,9 @@ Route::post('/upload-license', [LicenseController::class, 'uploadLicense'])->nam
 Route::view('/vehicle/basic', 'vehicle.vehicle_form')->name('show.vehicle.form');
 
 Route::post('/vehicle/basic/upload', [VehicleController::class, 'uploadVehicle'])->name('vehicle.upload');
+Route::get('/vehicle/tax-token-form/{vehicleID}', [TaxTokenController::class, 'showTaxTokenForm'])->name('vehicle.taxTokenForm');
+Route::post('/vehicle/tax-token', [TaxTokenController::class, 'uploadTaxToken'])->name('vehicle.uploadTaxToken');
+
 
 Route::get('/vehicle/registration-paper/{vehicle}', [RegistrationCertificateController::class, 'showRegistrationCertificateForm'])->name('vehicle.registrationPaper');
 Route::post('vehicle/registration-paper/upload', [RegistrationCertificateController::class, 'uploadRegistrationCertificate'])->name('upload.registration-certificate');

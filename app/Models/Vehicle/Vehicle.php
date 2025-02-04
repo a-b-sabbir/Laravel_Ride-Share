@@ -27,4 +27,8 @@ class Vehicle extends Model
     {
         return $this->hasOne(RegistrationCertificate::class, 'vehicle_id');
     }
+    public function taxToken()
+    {
+        return $this->hasOne(TaxToken::class);
+    }
 }

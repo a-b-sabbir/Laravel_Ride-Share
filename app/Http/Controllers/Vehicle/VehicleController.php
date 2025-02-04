@@ -48,10 +48,8 @@ class VehicleController extends Controller
                 return redirect()->route('vehicle.fitnessCertificate', ['vehicleID' => $vehicle->id])
                     ->with('success', 'Vehicle details saved. Please upload the Fitness Certificate.');
             } else {
-                return view('vehicle.registration_certificate_form', [
-                    'vehicleID' => $vehicle->id,
-                    'successMessage' => 'Vehicle details saved. Please upload the Certificate of Registration.'
-                ]);
+                return redirect()->route('vehicle.taxTokenForm', ['vehicleID' => $vehicle->id])
+                    ->with('success', 'Vehicle details saved. Please upload the Certificate of Registration.');
             }
         } catch (\Exception $e) {
             DB::rollBack();
