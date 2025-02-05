@@ -15,8 +15,9 @@ class VehicleController extends Controller
         $validatedData = $request->validate(
             [
                 'type' => 'required|in:Car,Bike',
+                'certificate_type' => 'required',
                 'photo' => 'required|image|mimes:png,jpg,jpeg|max:4000',
-                'vehicle_number' => 'required|string|min:3|max:20',
+                'vehicle_number' => 'required|string|min:3|max:40|unique:vehicles,vehicle_number',
                 'brand' => 'required|string',
                 'model' => 'required|string',
                 'make' => 'required'
@@ -30,12 +31,13 @@ class VehicleController extends Controller
 
             $vehicle = Vehicle::create([
                 'type' => $validatedData['type'],
+                'certificate_type' => $validatedData['certificate_type'],
                 'photo' => $vehiclePhotoPath,
                 'vehicle_number' => $validatedData['vehicle_number'],
                 'brand' => $validatedData['brand'],
                 'make' => $validatedData['make'],
                 'model' => $validatedData['model'],
-                'registration_step' => $validatedData['type'] === 'Car'
+                'registration_step' => $validatedData['certificate_type'] === 'Fitness Certificate'
                     ? 'Vehicle Fitness Certificate'
                     : 'Vehicle Registration Certificate'
             ]);
@@ -43,12 +45,13 @@ class VehicleController extends Controller
 
             DB::commit();
 
+
             // Redirect based on vehicle type
-            if ($validatedData['type'] === 'Car') {
-                return redirect()->route('vehicle.fitnessCertificate', ['vehicleID' => $vehicle->id])
+            if ($validatedData['certificate_type'] === 'Fitness Certificate') {
+                return redirect()->route('vehicle.fitnessCertificate', ['vehicleID' => $vehicle->id, 'RegNo' => $vehicle->vehicle_number])
                     ->with('success', 'Vehicle details saved. Please upload the Fitness Certificate.');
             } else {
-                return redirect()->route('vehicle.taxTokenForm', ['vehicleID' => $vehicle->id])
+                return redirect()->route('vehicle.registrationCertificateForm', ['vehicleID' => $vehicle->id, 'RegNo' => $vehicle->vehicle_number])
                     ->with('success', 'Vehicle details saved. Please upload the Certificate of Registration.');
             }
         } catch (\Exception $e) {

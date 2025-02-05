@@ -39,7 +39,7 @@
                             <!-- Registration No -->
                             <div class="mb-3">
                                 <label for="registration_number" class="form-label fw-bold required">Registration No</label>
-                                <input type="text" class="form-control" name="registration_number" id="registration_number">
+                                <input type="text" class="form-control" name="registration_number" id="registration_number" value="{{ $registration_number }}" readonly>
                                 @if ($errors->has('registration_number'))
                                 <div class="text-danger">
                                     <small>{{ $errors->first('registration_number') }}</small>

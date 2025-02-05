@@ -62,7 +62,7 @@ class PilotVehicleAssignmentController extends Controller
 
         switch ($role) {
             case 'Super Admin':
-                return redirect()->route('roles.super_admin.dashboard')->with('success', 'Pilot assigned successfully.');
+                return redirect()->route('super_admin.dashboard')->with('success', 'Pilot assigned successfully.');
             case 'Admin':
                 return redirect()->route('roles.admin.dashboard')->with('success', 'Pilot assigned successfully');
             case 'Sub-Admin':

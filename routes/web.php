@@ -13,6 +13,7 @@ use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileContro
 use App\Http\Controllers\SubAdmin\ProfileController as SubAdminProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Vehicle\Bike\RegistrationCertificateController;
+use App\Http\Controllers\Vehicle\Car\FitnessController;
 use App\Http\Controllers\Vehicle\TaxTokenController;
 use App\Http\Controllers\Vehicle\VehicleController;
 use App\Http\Middleware\AdminMiddleware;
@@ -71,26 +72,35 @@ Route::post('/upload-license', [LicenseController::class, 'uploadLicense'])->nam
 // -------------------------------------------
 // Vehicle Routes
 // -------------------------------------------
-Route::view('/vehicle/basic', 'vehicle.vehicle_form')->name('show.vehicle.form');
 
+// Vehicle Basic Information
+Route::view('/vehicle/basic', 'vehicle.vehicle_form')->name('show.vehicle.form');
 Route::post('/vehicle/basic/upload', [VehicleController::class, 'uploadVehicle'])->name('vehicle.upload');
+
+// Vehicle Registration Certificate
+Route::get('vehicle/{vehicleID}/registration/reg-no/{RegNo}', [RegistrationCertificateController::class, 'showRegistrationCertificateForm'])->name('vehicle.registrationCertificateForm');
+Route::post('vehicle/registration-paper/upload', [RegistrationCertificateController::class, 'uploadRegistrationCertificate'])->name('upload.registration-certificate');
+
+// Vehicle Fitness Certificate
+Route::get('vehicle/{vehicleID}/fitness/reg-no/{RegNo}', [FitnessController::class, 'showFitnessForm'])->name('vehicle.fitnessCertificate');
+Route::post('vehicle/fitness', [FitnessController::class, 'uploadFitness'])->name('vehicle.uploadFitness');
+
+// Vehicle Tax Token
 Route::get('/vehicle/tax-token-form/{vehicleID}', [TaxTokenController::class, 'showTaxTokenForm'])->name('vehicle.taxTokenForm');
 Route::post('/vehicle/tax-token', [TaxTokenController::class, 'uploadTaxToken'])->name('vehicle.uploadTaxToken');
-
-
-Route::get('/vehicle/registration-paper/{vehicle}', [RegistrationCertificateController::class, 'showRegistrationCertificateForm'])->name('vehicle.registrationPaper');
-Route::post('vehicle/registration-paper/upload', [RegistrationCertificateController::class, 'uploadRegistrationCertificate'])->name('upload.registration-certificate');
 
 
 // -------------------------------------------
 // Passenger Routes
 // -------------------------------------------
+
 Route::view('/passenger-registration', 'passenger.passenger_registration');
 Route::post('/passenger/register', [PassengerController::class, 'store'])->name('passenger_register');
 
 // -------------------------------------------
 // Dashboard Routes
 // -------------------------------------------
+
 Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::get('roles/super_admin/dashboard', [DashboardController::class, 'dashboard'])->name('super_admin.dashboard');
     Route::get('users', [UserController::class, 'index'])->name('user-management');

@@ -48,7 +48,7 @@ class TaxTokenController extends Controller
         ]);
 
         $vehicle = Vehicle::findOrFail($validatedData['vehicle_id']);
-
+        
 
         $taxTokenPhotoPath = $request->file('tax_token_photo')->store('tax_token_photo', 'public');
 

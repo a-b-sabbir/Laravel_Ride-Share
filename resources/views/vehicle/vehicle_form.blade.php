@@ -38,6 +38,20 @@
                                 @endif
                             </div>
 
+                            <!-- Certificate Type -->
+                            <div class="mb-3">
+                                <label for="certificate_type" class="form-label fw-bold required">Certificate Type</label>
+                                <select class="form-select" name="certificate_type" id="certificate_type">
+                                    <option value="Certificate of Registration">Certificate of Registration</option>
+                                    <option value="Fitness Certificate">Fitness Certificate</option>
+                                </select>
+                                @if($errors->has('certificate_type'))
+                                <div class="text-danger">
+                                    <small>{{ $errors->first('certificate_type') }}</small>
+                                </div>
+                                @endif
+                            </div>
+
                             <!-- Vehicle Photo -->
                             <div class="mb-3">
                                 <label for="photo" class="form-label fw-bold required">Vehicle Photo</label>
@@ -50,10 +64,14 @@
                             </div>
 
                             <!-- Vehicle Number -->
-
                             <div class="mb-3">
                                 <label for="vehicle_number" class="form-label fw-bold required">Vehicle Number</label>
                                 <input type="text" class="form-control" name="vehicle_number" id="vehicle_number" value="{{ old('vehicle_number') }}" required>
+                                @if($errors->has('vehicle_number'))
+                                <div class="text-danger">
+                                    <small>{{ $errors->first('vehicle_number') }}</small>
+                                </div>
+                                @endif
                             </div>
 
                             <!-- Brand -->
@@ -75,7 +93,6 @@
                             <div class="mb-3">
                                 <label for="model" class="form-label fw-bold required">Model</label>
                                 <select class="form-select" name="model" id="model" required>
-                                    <option value="disabled selected">Select Model</option>
                                     <option value="X">X</option>
                                     <option value="Y">Y</option>
                                 </select>
@@ -90,7 +107,6 @@
                             <div class="mb-3">
                                 <label for="make" class="form-label fw-bold required">Make</label>
                                 <select class="form-select" name="make" id="make" required>
-                                    <option value="disabled selected">Select Make</option>
                                     <option value="2020">2020</option>
                                     <option value="2021">2021</option>
                                 </select>

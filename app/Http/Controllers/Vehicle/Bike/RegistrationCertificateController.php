@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrationCertificateController extends Controller
 {
+
+    public function showRegistrationCertificateForm($vehicleID, $RegNo)
+    {
+        return view('vehicle.registration_certificate_form', [
+            'vehicleID' => $vehicleID,
+            'registration_number' => $RegNo
+        ]);
+    }
+
     public function uploadRegistrationCertificate(Request $request)
     {
         $validatedData = $request->validate([
