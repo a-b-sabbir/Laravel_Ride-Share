@@ -70,9 +70,6 @@
         <div class="row">
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Unassigned Pilots</h3>
-                <a href="{{ url('chooseregistration') }}" class="btn btn-danger w-50 mt-auto" style="background-color: #5af8fc; border-color: #ffffff; color:black">
-                    <i class="fas fa-cogs me-2"></i> Add New User
-                </a>
             </div>
         </div>
         @if($unassigned_pilots)
@@ -122,9 +119,6 @@
         <div class="row">
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Assigned Pilots</h3>
-                <a href="{{ url('chooseregistration') }}" class="btn w-50 mt-auto" style="background-color: #5af8fc; border-color: #ffffff; color: black;">
-                    <i class="fas fa-cogs me-2"></i> Add New User
-                </a>
             </div>
         </div>
         @if($assigned_pilots)
@@ -165,9 +159,15 @@
                             <a href="" class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <a href="" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
-                                <i class="fas fa-trash"></i> Delete
-                            </a>
+
+                            <form action="{{ route('delete.user', $record->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                @csrf
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+
                     </tr>
                     @endforeach
                 </tbody>

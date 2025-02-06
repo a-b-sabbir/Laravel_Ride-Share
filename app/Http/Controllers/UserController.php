@@ -31,13 +31,17 @@ class UserController extends Controller
                 $data['total_pilots'] = Pilot::count();
                 $data['active_pilots'] = Pilot::where('account_status', 'Active')->count();
                 return view('roles.super_admin.user-management', $data);
-                break;
-
-            default:
-                # code...
-                break;
         }
 
         return view('roles.super_admin.user-management', $data);
+    }
+
+    public function destroy($id)
+    {
+        dd('abc');
+        $record = Pilot::findOrFail($id);
+        $record->delete();
+
+        return back()->with('success', 'Deleted successfully.');
     }
 }

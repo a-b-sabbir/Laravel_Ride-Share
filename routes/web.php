@@ -109,6 +109,8 @@ Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');
     Route::get('super_admin/assign-pilot-to-vehicle/{id}', [SuperAdminPilotController::class, 'show'])->name('super_admin-assign-pilot-to-vehicle.show');
     Route::get('super-admin/profile', [SuperAdminProfileController::class, 'show'])->name('super-admin.profile.show');
+    Route::delete('/deleteuser/{id}', [UserController::class, 'destroy'])->name('delete.user');
+
 });
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
