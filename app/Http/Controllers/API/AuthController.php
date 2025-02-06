@@ -62,6 +62,10 @@ class AuthController extends Controller
         ]);
     }
 
+    public function showLoginForm(){
+        return view('auth.login');
+    }
+
     public function login_post(Request $request)
     {
         if (Auth::attempt([

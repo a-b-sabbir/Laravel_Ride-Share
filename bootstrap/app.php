@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\CheckPilotStatusMiddleware;
 use App\Http\Middleware\PassengerMiddleware;
 use App\Http\Middleware\PilotMiddleware;
 use App\Http\Middleware\SubAdminMiddleware;
@@ -23,7 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
             'sub_admin' => SubAdminMiddleware::class,
             'pilot' => PilotMiddleware::class,
-            'passenger' => PassengerMiddleware::class
+            'passenger' => PassengerMiddleware::class,
+            'check.pilot.status' => CheckPilotStatusMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -7,6 +7,17 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
+                    @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+
+                    @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                    @endif
                     <h4>
                         <center>Login</center>
                     </h4>
@@ -33,8 +44,10 @@
                     </form>
                 </div>
 
-                <br>
-                <label>Not A Member?</label> <a href="{{url('/chooseregistration')}}">Join now</a>
+                <div class="card-footer text-center">
+                    <span>Not a member? </span>
+                    <a href="{{url('/chooseregistration')}}" class="btn btn-link btn-sm text-primary">Join Now</a>
+                </div>
             </div>
         </div>
     </div>

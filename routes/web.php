@@ -37,11 +37,14 @@ Route::get('/', function () {
 // -------------------------------------------
 Route::view('/chooseregistration', 'auth.chooseregistration');
 Route::view('/login', 'auth.login');
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+
 Route::view('/forgot', 'auth.forgot');
 
 Route::post('/login_post', [AuthController::class, 'login_post']);
 Route::post('/forgot', [AuthController::class, 'forgot']);
 Route::get('logout', [AuthController::class, 'logout']);
+
 
 
 // -------------------------------------------
@@ -97,6 +100,7 @@ Route::post('/vehicle/tax-token', [TaxTokenController::class, 'uploadTaxToken'])
 Route::view('/passenger-registration', 'passenger.passenger_registration');
 Route::post('/passenger/register', [PassengerController::class, 'store'])->name('passenger_register');
 
+
 // -------------------------------------------
 // Dashboard Routes
 // -------------------------------------------
@@ -110,7 +114,6 @@ Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::get('super_admin/assign-pilot-to-vehicle/{id}', [SuperAdminPilotController::class, 'show'])->name('super_admin-assign-pilot-to-vehicle.show');
     Route::get('super-admin/profile', [SuperAdminProfileController::class, 'show'])->name('super-admin.profile.show');
     Route::delete('/deleteuser/{id}', [UserController::class, 'destroy'])->name('delete.user');
-
 });
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
@@ -128,10 +131,11 @@ Route::middleware(['auth', SubAdminMiddleware::class])->group(function () {
     Route::get('sub-admin/profile', [SubAdminProfileController::class, 'show'])->name('sub-admin.profile.show');
 });
 
-Route::middleware(['auth', PilotMiddleware::class])->group(function () {
-    Route::get('pilot/dashboard', [DashboardController::class, 'dashboard'])->name('pilot.dashboard');
+Route::middleware(['auth', 'check.pilot.status'])->group(function () {
+    Route::get('roles/pilot/dashboard', [DashboardController::class, 'dashboard'])->name('pilot.dashboard');
 });
 
+
 Route::middleware(['auth', PassengerMiddleware::class])->group(function () {
-    Route::get('passenger/dashboard', [DashboardController::class, 'dashboard'])->name('passenger.dashboard');
+    Route::get('roles/passenger/dashboard', [DashboardController::class, 'dashboard'])->name('passenger.dashboard');
 });
