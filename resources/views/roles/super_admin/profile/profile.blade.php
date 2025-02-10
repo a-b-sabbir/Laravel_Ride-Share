@@ -5,7 +5,9 @@
     <!-- Profile Header -->
     <div class="profile-header text-center">
         <div class="profile-photo">
-            <img src="{{ asset($profile_photo) }}" alt="Profile Picture" class="rounded-circle shadow" width="120" height="120" />
+            <img src="{{ asset('storage/' . $profile_photo) }}"
+                alt="Profile Picture"
+                class="rounded-circle shadow" width="120" height="120" />
         </div>
         <h2 class="mt-3">{{ $user_name }}</h2>
         <p class="text-muted">Super Admin | {{ $email }}</p>

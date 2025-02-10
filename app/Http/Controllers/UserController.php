@@ -26,8 +26,8 @@ class UserController extends Controller
                 $data['total_unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->count();
                 $data['total_unassigned_vehicles'] = Vehicle::whereDoesntHave('assignments')->count();
                 $data['total_assigned_pilots'] = Pilot::whereHas('assignments')->count();
-                $data['unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->get();
-                $data['assigned_pilots'] = Pilot::whereHas('assignments')->get();
+                $data['unassigned_pilots'] = Pilot::whereDoesntHave('assignments')->paginate(10);
+                $data['assigned_pilots'] = Pilot::whereHas('assignments')->paginate(10);
                 $data['total_pilots'] = Pilot::count();
                 $data['active_pilots'] = Pilot::where('account_status', 'Active')->count();
                 return view('roles.super_admin.user-management', $data);

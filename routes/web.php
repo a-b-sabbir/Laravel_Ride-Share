@@ -108,6 +108,9 @@ Route::post('/passenger/register', [PassengerController::class, 'store'])->name(
 Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::get('roles/super_admin/dashboard', [DashboardController::class, 'dashboard'])->name('super_admin.dashboard');
     Route::get('users', [UserController::class, 'index'])->name('user-management');
+    Route::post('/pilot/{pilotID}/update-status', [SuperAdminPilotController::class, 'updatePilotStatus'])->name('pilot.updateStatus');
+    Route::post('/pilot/{pilotID}/update-pilot-background-status', [SuperAdminPilotController::class, 'updatePilotBackgroundCheckStatus'])->name('pilot.backgroundCheckStatus');
+    Route::post('/pilot/{pilotID}/update-approval', [SuperAdminPilotController::class, 'updatePilotApproval'])->name('pilot.approval');
     Route::view('settings', 'roles.super_admin.settings.settings')->name('settings');
     Route::get('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('super_admin-assign-pilot-to-vehicle.create');
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');

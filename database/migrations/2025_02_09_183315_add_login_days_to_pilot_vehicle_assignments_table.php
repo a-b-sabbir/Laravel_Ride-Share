@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pilot_vehicle_assignments', function (Blueprint $table) {
-
-
-            $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('login_days')->default(0);
         });
     }
 
@@ -24,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pilot_vehicle_assignments', function (Blueprint $table) {
-            $table->dropColumn('admin_id');
+            $table->dropColumn('login_days');
         });
     }
 };

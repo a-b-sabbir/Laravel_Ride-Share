@@ -15,6 +15,7 @@ return new class extends Migration
             $table->date('last_payment_date')->nullable();
             $table->date('payment_due_date')->nullable();
             $table->double('paid_amount')->default(0);
+            $table->date('approval_date')->nullable();
         });
     }
 
@@ -24,7 +25,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pilots', function (Blueprint $table) {
-            $table->dropColumn(['last_payment_date', 'payment_due_date', 'paid_amount']);
+            $table->dropColumn('last_payment_date');
+            $table->dropColumn('payment_due_date');
+            $table->dropColumn('paid_amount');
+            $table->dropColumn('approval_date');
         });
     }
 };

@@ -20,15 +20,15 @@ class CheckPilotStatusMiddleware
 
         // Check if the user is a pilot
         if ($pilot) {
-            if ($pilot->pilot->account_status == 'Suspended') {
+            if ($pilot->pilot->assignments->status == 'Suspended') {
                 return redirect()->route('login')->with('error', 'Your account is Suspended. Please contact support.');
             }
 
-            if ($pilot->pilot->account_status == 'Deactivated') {
+            if ($pilot->pilot->assignments->status == 'Deactivated') {
                 return redirect()->route('login')->with('error', 'Your account is Deactivated. Please contact support.');
             }
 
-            if ($pilot->pilot->account_status == 'Active') {
+            if ($pilot->pilot->assignments->status == 'Active') {
                 return $next($request);
             }
         }

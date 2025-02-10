@@ -74,14 +74,15 @@
         </div>
         @if($unassigned_pilots)
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered">
+            <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Status</th>
+                        <th>Wallet</th>
+                        <th>Background Check</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -92,8 +93,24 @@
                         <td>{{ $record->user->name }}</td>
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>
-                        <td>{{ $record->account_status }}</td>
-                        <td><a href="" class="btn btn-primary btn-sm">
+                        <td>{{ $record->wallet_balance }}</td>
+                        <td>
+                            <form action="{{ route('pilot.backgroundCheckStatus', $record->id) }}" method="POST" id="statusForm">
+                                @csrf
+                                <div class="form-group">
+                                    <select name="background_check_status" class="form-control" id="background_check_status" onchange="this.form.submit()">
+                                        <option value="Pending" {{ $record->background_check_status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="Passed" {{ $record->background_check_status == 'Passed' ? 'selected' : '' }}>Passed</option>
+                                        <option value="Failed" {{ $record->background_check_status == 'Failed' ? 'selected' : '' }}>Failed</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{{ route('super_admin-assign-pilot-to-vehicle.show', $record->id) }}" class="btn btn-success btn-sm">
+                                <i class="fas fa-user-check"></i> View
+                            </a>
+                            <a href="" class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                             <a href="" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
@@ -104,6 +121,14 @@
                     @endforeach
                 </tbody>
             </table>
+
+            @if($unassigned_pilots->count() > 9)
+            <!-- Pagination Links -->
+            <div class="d-flex justify-content-center">
+                {{ $unassigned_pilots->links('pagination::bootstrap-5') }}
+            </div>
+            @endif
+
         </div>
         @else
         <div class="alert alert-warning" role="alert">
@@ -121,6 +146,7 @@
                 <h3>Assigned Pilots</h3>
             </div>
         </div>
+
         @if($assigned_pilots)
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
@@ -130,7 +156,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Approval</th>
+                        <th>Wallet</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -142,16 +168,20 @@
                         <td>{{ $record->user->name }}</td>
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>
-                        <td>
-                            @if($record->user->approval == false)
-                            Not Approved
-                            @else
-                            Approved
-                            @endif
-                        </td>
+                        <td>{{ $record->wallet_balance }}</td>
 
+                        <td>
+                            <form action="{{ route('pilot.updateStatus', $record->id) }}" method="POST" id="statusForm">
+                                @csrf
+                                <div class="form-group">
+                                    <select name="status" class="form-control" id="status" onchange="this.form.submit()">
+                                        <option value="Active" {{ $record->assignments->status == 'Active' ? 'selected' : '' }}>Active</option>
+                                        <option value="Suspended" {{ $record->assignments->status == 'Suspended' ? 'selected' : '' }}>Suspended</option>
+                                        <option value="Deactivated" {{ $record->assignments->status == 'Deactivated' ? 'selected' : '' }}>Deactivated</option>
+                                    </select>
+                                </div>
+                            </form>
                         </td>
-                        <td>{{ $record->account_status }}</td>
                         <td>
                             <a href="{{ route('super_admin-assign-pilot-to-vehicle.show', $record->id) }}" class="btn btn-success btn-sm">
                                 <i class="fas fa-user-check"></i> View
@@ -159,7 +189,6 @@
                             <a href="" class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-
                             <form action="{{ route('delete.user', $record->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                 @csrf
                                 <input type="hidden" name="_method" value="DELETE">
@@ -167,11 +196,16 @@
                                     <i class="fas fa-trash"></i> Delete
                                 </button>
                             </form>
-
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+            @if($assigned_pilots->count() > 9)
+            <!-- Pagination Links -->
+            <div class="d-flex justify-content-center">
+                {{ $assigned_pilots->links('pagination::bootstrap-5') }}
+            </div>
+            @endif
         </div>
         @else
         <div class="alert alert-warning" role="alert">
