@@ -48,13 +48,13 @@ class PilotController extends Controller
     {
 
         $validatedData = $request->validate([
-            'profile_photo' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
+            'profile_photo' => 'required|image|mimes:jpg,png,jpeg|max:5000',
             'name' => 'required|string',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:100',
             'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
             'phone_number' => 'required',
-            'nid' => ['required', 'string', 'unique:pilots,nid', 'regex:/^\d{10}$|^\d{13}$|^\d{17}$/'],
+            'nid' => ['required', 'string', 'regex:/^\d{10}$|^\d{13}$|^\d{17}$/'],
             'nid_image' => 'required|image|mimes:jpg,png,jpeg|max:5000',
             'address' => 'required|string',
             'emergency_contact_name' => 'nullable|string',
@@ -93,9 +93,11 @@ class PilotController extends Controller
 
             // Check if the pilot already exists
             $pilot = Pilot::firstOrCreate(
-                ['user_id' => $user->id],
                 [
-                    'nid' => $validatedData['nid'],
+                    'user_id' => $user->id,
+                    'nid' => $validatedData['nid']
+                ],
+                [
                     'nid_image' => $nidImagePath,
                     'address' => $validatedData['address'],
                     'emergency_contact_name' => $validatedData['emergency_contact_name'],
@@ -106,12 +108,12 @@ class PilotController extends Controller
                 ]
             );
             DB::commit();
-            
+
             if ($pilot->registration_step === 'Driving License') {
-           
+
                 return redirect()->route('show.pilot.license.form', ['pilot' => $pilot->id])->with('success', 'Pilot basic registration successful. Please proceed to the license step.');
             } elseif ($pilot->registration_step === 'Basic Vehicle Info') {
-            
+
                 return redirect()->route('show.vehicle.form', ['pilot' => $pilot->id])->with('success', 'Pilot License registration successful. Please submit the vehicle basic form.');
             }
         } catch (\Exception $e) {

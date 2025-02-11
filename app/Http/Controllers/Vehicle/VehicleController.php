@@ -10,14 +10,17 @@ use Illuminate\Support\Facades\DB;
 
 class VehicleController extends Controller
 {
+
+
     public function uploadVehicle(Request $request)
     {
+
         $validatedData = $request->validate(
             [
                 'type' => 'required|in:Car,Bike',
                 'certificate_type' => 'required',
                 'photo' => 'required|image|mimes:png,jpg,jpeg|max:4000',
-                'vehicle_number' => 'required|string|min:3|max:40|unique:vehicles,vehicle_number',
+                'vehicle_number' => 'required|string|min:3|max:40',
                 'brand' => 'required|string',
                 'model' => 'required|string',
                 'make' => 'required'
@@ -25,19 +28,24 @@ class VehicleController extends Controller
         );
 
         try {
+
+
+            $vehicle = Vehicle::where('vehicle_number', $validatedData['vehicle_number'])->first();
+
             DB::beginTransaction();
 
             $vehiclePhotoPath = $request->file('photo')->store('vehicle_photos', 'public');
 
-            $vehicle = Vehicle::create([
+            $vehicle = Vehicle::firstOrCreate([
+                'vehicle_number' => $validatedData['vehicle_number'],
+            ], [
                 'type' => $validatedData['type'],
                 'certificate_type' => $validatedData['certificate_type'],
                 'photo' => $vehiclePhotoPath,
-                'vehicle_number' => $validatedData['vehicle_number'],
                 'brand' => $validatedData['brand'],
                 'make' => $validatedData['make'],
                 'model' => $validatedData['model'],
-                'registration_step' => $validatedData['certificate_type'] === 'Fitness Certificate'
+                'registration_step' => $vehicle->certificate_type === 'Fitness Certificate'
                     ? 'Vehicle Fitness Certificate'
                     : 'Vehicle Registration Certificate'
             ]);
@@ -47,7 +55,7 @@ class VehicleController extends Controller
 
 
             // Redirect based on vehicle type
-            if ($validatedData['certificate_type'] === 'Fitness Certificate') {
+            if ($vehicle->certificate_type === 'Fitness Certificate') {
                 return redirect()->route('vehicle.fitnessCertificate', ['vehicleID' => $vehicle->id, 'RegNo' => $vehicle->vehicle_number])
                     ->with('success', 'Vehicle details saved. Please upload the Fitness Certificate.');
             } else {
