@@ -84,7 +84,7 @@ Route::post('/vehicle/basic/upload', [VehicleController::class, 'uploadVehicle']
 Route::get('vehicle/{vehicleID}/registration/reg-no/{RegNo}', [RegistrationCertificateController::class, 'showRegistrationCertificateForm'])->name('vehicle.registrationCertificateForm');
 Route::post('vehicle/registration-paper/upload', [RegistrationCertificateController::class, 'uploadRegistrationCertificate'])->name('upload.registration-certificate');
 
-// Vehicle Fitness Certificate
+// Vehicle Fitness  Certificate
 Route::get('vehicle/{vehicleID}/fitness/reg-no/{RegNo}', [FitnessController::class, 'showFitnessForm'])->name('vehicle.fitnessCertificate');
 Route::post('vehicle/fitness', [FitnessController::class, 'uploadFitness'])->name('vehicle.uploadFitness');
 

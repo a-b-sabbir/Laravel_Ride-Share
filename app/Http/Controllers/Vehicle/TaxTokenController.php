@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Vehicle;
 
 use App\Http\Controllers\Controller;
+use App\Models\Referral;
+use App\Models\User;
 use App\Models\Vehicle\TaxToken;
 use App\Models\Vehicle\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 
@@ -19,7 +22,6 @@ class TaxTokenController extends Controller
 
     public function uploadTaxToken(Request $request)
     {
-
         $validatedData = $request->validate([
             'vehicle_id' => 'required|exists:vehicles,id',
             'tax_token_photo' => 'required',
@@ -44,14 +46,11 @@ class TaxTokenController extends Controller
             'tax_period_end' => 'required|date|after:tax_period_start',
             'principal_amount' => 'required|numeric|min:0',
             'fine' => 'nullable|numeric|min:0',
-            'total_amount' => 'required|numeric|min:0',
+            'total_amount' => 'required|numeric|min:0'
         ]);
 
         $vehicle = Vehicle::findOrFail($validatedData['vehicle_id']);
-        
-
         $taxTokenPhotoPath = $request->file('tax_token_photo')->store('tax_token_photo', 'public');
-
 
         // Store tax token with automatically fetched details
         $taxToken = TaxToken::create([
@@ -80,6 +79,10 @@ class TaxTokenController extends Controller
             'fine' => $validatedData['fine'] ?? 0,
             'total_amount' => $validatedData['total_amount'],
         ]);
+
+
+
+
 
         dd('abc');
 

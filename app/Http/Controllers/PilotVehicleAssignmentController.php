@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PilotVehicleAssignmentController extends Controller
 {
@@ -49,7 +50,6 @@ class PilotVehicleAssignmentController extends Controller
         DB::beginTransaction();
 
         try {
-            // Create PilotVehicleAssignment
             PilotVehicleAssignment::create([
                 'pilot_id' => $validatedData['pilot_id'],
                 'vehicle_id' => $validatedData['vehicle_id'],
@@ -61,22 +61,23 @@ class PilotVehicleAssignmentController extends Controller
                 'login_days' => 30,  // This is for the first 30 free days
             ]);
 
-            // Find the pilot and update the payment_due_date
             $pilot = Pilot::findOrFail($validatedData['pilot_id']);
+
+            // Referrer
+            $pilot->user->referral_code = strtoupper(Str::random(8));
+            $pilot->user->save();
 
             // Set the payment_due_date to 30 days from now
             $pilot->payment_due_date = Carbon::now()->addDays(30);
-            $pilot->approval_date = now();  // Set the approval date
+            $pilot->approval_date = now(); 
 
             // Ensure the approval field is set to true if it's false
             if ($pilot->approval === false) {
                 $pilot->approval = true;
             }
 
-            // Save the pilot details
             $pilot->save();
 
-            // Commit transaction
             DB::commit();
 
             // Redirect based on the user's role

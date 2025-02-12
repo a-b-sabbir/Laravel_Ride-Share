@@ -28,8 +28,6 @@ class VehicleController extends Controller
         );
 
         try {
-
-
             $vehicle = Vehicle::where('vehicle_number', $validatedData['vehicle_number'])->first();
 
             DB::beginTransaction();

@@ -156,6 +156,18 @@
                                 </select>
                             </div>
 
+                            <!-- Referral Code -->
+                            <div class="mb-3">
+                                <label for="text" class="form-label fw-bold">Referral Code (If any:)</label>
+                                <input type="text" id="referral_code" name="referral_code" class="form-control">
+                                @if ($errors->has('referral_code'))
+                                <div class="text-danger">
+                                    <small>{{ $errors->first('referral_code') }}</small>
+                                </div>
+                                @endif
+                            </div>
+
+
                             <!-- Submit Button -->
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary btn-lg w-100">Submit</button>

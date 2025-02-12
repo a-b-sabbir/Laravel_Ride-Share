@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Pilot;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilot;
+use App\Models\PilotVehicleAssignment;
+use App\Models\Referral;
 use App\Models\User;
 use App\SMSService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PilotController extends Controller
 {
@@ -61,6 +64,8 @@ class PilotController extends Controller
             'emergency_contact_number' => 'nullable|string|max:14',
             'relation_with_emergency_contact' => 'nullable|string',
             'preferred_shift' => 'nullable|in:day,night,flexible',
+            'referral_code' => 'nullable|exists:users,referral_code'
+
         ]);
 
 
@@ -91,6 +96,20 @@ class PilotController extends Controller
             );
 
 
+            if ($request->referral_code) {
+                $referrer = User::where('referral_code', $validatedData['referral_code'])->first();
+                if ($referrer) {
+                    Referral::create([
+                        'referrer_user_id' => $referrer->id,
+                        'referred_user_id' => $user->id,
+                        'type' => null,
+                        'status' => 'Pending',
+                        'rewards_given' => false
+                    ]);
+                    $this->rewardReferrer($referrer);
+                }
+            }
+
             // Check if the pilot already exists
             $pilot = Pilot::firstOrCreate(
                 [
@@ -104,21 +123,36 @@ class PilotController extends Controller
                     'emergency_contact_number' => $validatedData['emergency_contact_number'],
                     'relation_with_emergency_contact' => $validatedData['relation_with_emergency_contact'],
                     'preferred_shift' => $validatedData['preferred_shift'],
+                    'referral_code' => strtoupper(Str::random(8)),
                     'registration_step' => 'Driving License'
                 ]
             );
             DB::commit();
 
             if ($pilot->registration_step === 'Driving License') {
-
                 return redirect()->route('show.pilot.license.form', ['pilot' => $pilot->id])->with('success', 'Pilot basic registration successful. Please proceed to the license step.');
             } elseif ($pilot->registration_step === 'Basic Vehicle Info') {
-
                 return redirect()->route('show.vehicle.form', ['pilot' => $pilot->id])->with('success', 'Pilot License registration successful. Please submit the vehicle basic form.');
             }
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Pilot registration failed. Please try again.');
+        }
+    }
+    private function rewardReferrer($referrer)
+    {
+
+
+        $referrerPilot = Pilot::where('user_id', $referrer->id)->first();
+
+
+        // Check if the referrer is a pilot
+        $assignedPilot = PilotVehicleAssignment::where('pilot_id', $referrerPilot->id)->first();
+        
+
+        if ($assignedPilot) {
+            // Give reward (extra days)
+            $assignedPilot->increment('login_days', 10);  // Adding 10 extra days
         }
     }
     public function licenseStep($id) {}
