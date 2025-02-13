@@ -84,7 +84,7 @@ class RegistrationCertificateController extends Controller
             DB::commit();
 
             if ($vehicle->registration_step === 'Vehicle Tax Token') {
-                return view('vehicle.tax-token-form', ['vehicleId' => $vehicle->id])->with('success', 'Vehicle registration certificate info update successful. Please proceed to the Tax Token step.');
+                return redirect()->route('vehicle.taxTokenForm', ['vehicleId' => $vehicle->id])->with('success', 'Vehicle registration certificate info update successful. Please proceed to the Tax Token step.');
             } elseif ($vehicle->registration_step === 'Basic Vehicle Info') {
                 return redirect()->route('show.vehicle.form', ['vehicleId' => $vehicle->id])->with('success', 'Pilot License registration successful. Please submit the vehicle basic form.');
             }

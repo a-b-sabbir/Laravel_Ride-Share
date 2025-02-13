@@ -129,6 +129,8 @@ class PilotVehicleAssignmentController extends Controller
                 }
             }
 
+            
+
             $referrer_pilot->save();
 
             DB::commit();

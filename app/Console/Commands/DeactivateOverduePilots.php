@@ -28,6 +28,17 @@ class DeactivateOverduePilots extends Command
     public function handle()
     {
 
+        $assignedPilots = PilotVehicleAssignment::all();
+
+        // Decrease the login_days by 1
+        foreach ($assignedPilots as $pilots) {
+            if ($pilots->login_days > 0) {
+                $pilots->login_days -= 1;
+                $pilots->save();
+            }
+        }
+
+
         $today = Carbon::now(); // Get today's date and time
 
         // Find pilots who:
