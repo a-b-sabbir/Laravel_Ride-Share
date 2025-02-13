@@ -96,17 +96,30 @@ class PilotController extends Controller
             );
 
 
+
             if ($request->referral_code) {
                 $referrer = User::where('referral_code', $validatedData['referral_code'])->first();
+
                 if ($referrer) {
-                    Referral::create([
-                        'referrer_user_id' => $referrer->id,
-                        'referred_user_id' => $user->id,
-                        'type' => null,
-                        'status' => 'Pending',
-                        'rewards_given' => false
-                    ]);
-                    $this->rewardReferrer($referrer);
+                    $existingReferral = Referral::where('referred_user_id', $user->id)->first();
+
+                    if ($existingReferral) {
+                        // Update the existing referral if necessary
+                        $existingReferral->update([
+                            'referrer_user_id' => $referrer->id,  // Optional: Update referrer if needed
+                            'status' => 'Pending',
+                            'rewards_given' => false,
+                        ]);
+                    } else {
+                        // Create a new referral entry if not exists
+                        Referral::create([
+                            'referrer_user_id' => $referrer->id,
+                            'referred_user_id' => $user->id,
+                            'referred_user_type' => null,
+                            'status' => 'Pending',
+                            'rewards_given' => false
+                        ]);
+                    }
                 }
             }
 
@@ -123,7 +136,6 @@ class PilotController extends Controller
                     'emergency_contact_number' => $validatedData['emergency_contact_number'],
                     'relation_with_emergency_contact' => $validatedData['relation_with_emergency_contact'],
                     'preferred_shift' => $validatedData['preferred_shift'],
-                    'referral_code' => strtoupper(Str::random(8)),
                     'registration_step' => 'Driving License'
                 ]
             );
@@ -139,22 +151,7 @@ class PilotController extends Controller
             return redirect()->back()->with('error', 'Pilot registration failed. Please try again.');
         }
     }
-    private function rewardReferrer($referrer)
-    {
 
-
-        $referrerPilot = Pilot::where('user_id', $referrer->id)->first();
-
-
-        // Check if the referrer is a pilot
-        $assignedPilot = PilotVehicleAssignment::where('pilot_id', $referrerPilot->id)->first();
-        
-
-        if ($assignedPilot) {
-            // Give reward (extra days)
-            $assignedPilot->increment('login_days', 10);  // Adding 10 extra days
-        }
-    }
     public function licenseStep($id) {}
     public function vehicleStep($id) {}
 }

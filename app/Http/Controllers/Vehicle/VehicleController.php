@@ -43,11 +43,15 @@ class VehicleController extends Controller
                 'brand' => $validatedData['brand'],
                 'make' => $validatedData['make'],
                 'model' => $validatedData['model'],
-                'registration_step' => $vehicle->certificate_type === 'Fitness Certificate'
-                    ? 'Vehicle Fitness Certificate'
-                    : 'Vehicle Registration Certificate'
-            ]);
 
+            ]);
+            // If the certificate_type is set, update the registration_step
+            $vehicle->registration_step = $vehicle->certificate_type === 'Fitness Certificate'
+                ? 'Vehicle Fitness Certificate'
+                : 'Vehicle Registration Certificate';
+
+            // Save the vehicle after updating the registration_step
+            $vehicle->save();   
 
             DB::commit();
 

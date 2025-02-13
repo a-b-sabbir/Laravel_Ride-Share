@@ -74,7 +74,7 @@ class RegistrationCertificateController extends Controller
                 'laden_weight' => $validatedData['laden_weight'],
                 'issuing_authority' => $validatedData['issuing_authority']
             ]);
-
+            dd($validatedData);
 
             // Update the registration_step in Vehicle model
             $vehicle->registration_step = 'Vehicle Tax Token'; // Update to the next step
@@ -84,7 +84,7 @@ class RegistrationCertificateController extends Controller
             DB::commit();
 
             if ($vehicle->registration_step === 'Vehicle Tax Token') {
-                return view('vehicle.tax-token', ['vehicleId' => $vehicle->id])->with('success', 'Vehicle registration certificate info update successful. Please proceed to the Tax Token step.');
+                return view('vehicle.tax-token-form', ['vehicleId' => $vehicle->id])->with('success', 'Vehicle registration certificate info update successful. Please proceed to the Tax Token step.');
             } elseif ($vehicle->registration_step === 'Basic Vehicle Info') {
                 return redirect()->route('show.vehicle.form', ['vehicleId' => $vehicle->id])->with('success', 'Pilot License registration successful. Please submit the vehicle basic form.');
             }

@@ -97,7 +97,7 @@ Route::post('/vehicle/tax-token', [TaxTokenController::class, 'uploadTaxToken'])
 // Passenger Routes
 // -------------------------------------------
 
-Route::view('/passenger-registration', 'passenger.passenger_registration');
+Route::view('/passenger-registration', 'roles.passenger.passenger_registration');
 Route::post('/passenger/register', [PassengerController::class, 'store'])->name('passenger_register');
 
 

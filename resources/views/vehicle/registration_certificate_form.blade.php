@@ -18,7 +18,7 @@
                     </div>
                     @endif
                     <h4>
-                        <center>Vehicle Registration Paper Form</center>
+                        <center>Vehicle Registration Certificate Form</center>
                     </h4>
                     <div class="mb-3">
                         <form action="{{ route('upload.registration-certificate') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>

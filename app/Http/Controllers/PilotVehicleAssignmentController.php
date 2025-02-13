@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pilot;
 use App\Models\PilotVehicleAssignment;
+use App\Models\Referral;
 use App\Models\Vehicle\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -61,25 +62,76 @@ class PilotVehicleAssignmentController extends Controller
                 'login_days' => 30,  // This is for the first 30 free days
             ]);
 
-            $pilot = Pilot::findOrFail($validatedData['pilot_id']);
+            $referrer_pilot = Pilot::findOrFail($validatedData['pilot_id']);
 
             // Referrer
-            $pilot->user->referral_code = strtoupper(Str::random(8));
-            $pilot->user->save();
+            $referrer_pilot->user->referral_code = strtoupper(Str::random(8));
+
+            $referrer_pilot->user->save();
 
             // Set the payment_due_date to 30 days from now
-            $pilot->payment_due_date = Carbon::now()->addDays(30);
-            $pilot->approval_date = now(); 
+            $referrer_pilot->payment_due_date = Carbon::now()->addDays(30);
+            $referrer_pilot->approval_date = now();
 
             // Ensure the approval field is set to true if it's false
-            if ($pilot->approval === false) {
-                $pilot->approval = true;
+            if ($referrer_pilot->approval === false) {
+                $referrer_pilot->approval = true;
             }
 
-            $pilot->save();
+
+            // Referred
+            $referred_user_id = $referrer_pilot->user->id;
+
+            $vehicle = Vehicle::findOrFail($validatedData['vehicle_id']);
+            $vehicle_type = $vehicle->type;
+
+            // Referred
+            $referral = Referral::where('referred_user_id', $referred_user_id)->first();
+
+            if ($referral) {
+                if ($vehicle_type == 'Car') {
+                    $referral->update([
+                        'referred_user_type' => $vehicle_type,
+                        'status' => 'Successful',
+                        'rewards_given' => true
+                    ]);
+                } elseif ($vehicle_type == 'Bike') {
+                    $referral->update([
+                        'referred_user_type' => $vehicle_type,
+                        'status' => 'Successful',
+                        'rewards_given' => true
+                    ]);
+                } else {
+                    $referral->update([
+                        'referred_user_type' => 'Passenger',
+                        'status' => 'Successful',
+                        'rewards_given' => true
+                    ]);
+                }
+
+
+                $referrer = $referral->referrer_user_id;
+
+
+                $referrerPilot = Pilot::where('user_id', $referrer)->first();
+
+
+                // Check if the referrer is a pilot
+                $assignedPilot = PilotVehicleAssignment::where('pilot_id', $referrerPilot->id)->first();
+
+
+                if ($assignedPilot) {
+                    if ($vehicle_type == 'Car') {
+                        $assignedPilot->increment('login_days', 10);  // Adding 10 extra days
+                    }elseif($vehicle_type == 'Bike'){
+                        $assignedPilot->increment('login_days', 4);  // Adding 10 extra days
+                    }
+                }
+            }
+
+            $referrer_pilot->save();
 
             DB::commit();
-
             // Redirect based on the user's role
             $role = Auth::user()->role->name;
             switch ($role) {
@@ -99,6 +151,7 @@ class PilotVehicleAssignmentController extends Controller
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }
+
 
     // Update assignment status
     public function updateAssignmentStatus(Request $request, $assignmentId)
