@@ -152,7 +152,7 @@
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>#</th>
+                        <th>Assignment ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -166,7 +166,7 @@
                 <tbody>
                     @foreach($assigned_pilots as $index => $record)
                     <tr>
-                        <td>{{ (int) $index + 1 }}</td>
+                        <td>{{ $record->id }}</td>
                         <td>{{ $record->user->name }}</td>
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>

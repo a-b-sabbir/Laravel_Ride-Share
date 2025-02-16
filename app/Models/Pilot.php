@@ -17,7 +17,9 @@ class Pilot extends Model
         'relation_with_emergency_contact',
         'preferred_shift',
         'registration_step',
-        'payment_due_date'
+        'last_payment_date',
+        'payment_due_date',
+        'paid_amount'
     ];
 
     public function user()

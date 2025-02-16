@@ -5,7 +5,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\Passenger\PassengerController;
 use App\Http\Controllers\Pilot\LicenseController;
+use App\Http\Controllers\Pilot\PaymentController;
 use App\Http\Controllers\Pilot\PilotController;
+use App\Http\Controllers\Pilot\ProfileController;
 use App\Http\Controllers\PilotVehicleAssignmentController;
 use App\Http\Controllers\SubAdmin\PilotController as SubAdminPilotController;
 use App\Http\Controllers\SuperAdmin\PilotController as SuperAdminPilotController;
@@ -99,6 +101,24 @@ Route::post('/vehicle/tax-token', [TaxTokenController::class, 'uploadTaxToken'])
 
 Route::view('/passenger-registration', 'roles.passenger.passenger_registration');
 Route::post('/passenger/register', [PassengerController::class, 'store'])->name('passenger_register');
+
+
+// -------------------------------------------
+// Pilot Routes
+// -------------------------------------------
+
+Route::get('/pilot/payment', function () {
+    return view('roles.pilot.payment');
+})->name('pilot.payment');
+
+
+
+Route::middleware(['auth', PilotMiddleware::class])->group(function () {
+    Route::get('pilot/dashboard', [DashboardController::class, 'dashboard'])->name('pilot.dashboard');
+    Route::get('pilot/profile', [ProfileController::class, 'show'])->name('pilot.profile.show');
+    Route::post('/pilot/payment/process', [PaymentController::class, 'processPayment'])->name('pilot.payment.process');
+});
+
 
 
 // -------------------------------------------
