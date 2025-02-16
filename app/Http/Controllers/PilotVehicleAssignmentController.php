@@ -119,17 +119,24 @@ class PilotVehicleAssignmentController extends Controller
                 // Check if the referrer is a pilot
                 $assignedPilot = PilotVehicleAssignment::where('pilot_id', $referrerPilot->id)->first();
 
-
                 if ($assignedPilot) {
+                    $pilot = $assignedPilot->pilot; // Store the related pilot once to avoid redundant queries
+
                     if ($vehicle_type == 'Car') {
                         $assignedPilot->increment('login_days', 10);  // Adding 10 extra days
-                    }elseif($vehicle_type == 'Bike'){
-                        $assignedPilot->increment('login_days', 4);  // Adding 10 extra days
+                        $pilot->update([
+                            'payment_due_date' => Carbon::parse($pilot->payment_due_date)->addDays(10)  // Adding 10 extra days
+                        ]);
+                    } elseif ($vehicle_type == 'Bike') {
+                        $assignedPilot->increment('login_days', 4);  // Adding 4 extra days
+                        $pilot->update([
+                            'payment_due_date' => Carbon::parse($pilot->payment_due_date)->addDays(4)  // Adding 4 extra days
+                        ]);
                     }
                 }
             }
 
-            
+
 
             $referrer_pilot->save();
 

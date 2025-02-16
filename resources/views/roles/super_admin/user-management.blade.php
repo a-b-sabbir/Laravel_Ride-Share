@@ -149,7 +149,7 @@
 
         @if($assigned_pilots)
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered">
+            <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
@@ -157,6 +157,8 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Wallet</th>
+                        <th>Login Days</th>
+                        <th>Payment Due Date</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -169,7 +171,8 @@
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>
                         <td>{{ $record->wallet_balance }}</td>
-
+                        <td>{{ $record ->assignments->login_days }}</td>
+                        <td>{{ $record -> payment_due_date }}</td>
                         <td>
                             <form action="{{ route('pilot.updateStatus', $record->id) }}" method="POST" id="statusForm">
                                 @csrf
