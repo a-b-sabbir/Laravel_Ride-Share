@@ -27,19 +27,20 @@ class DeactivateOverduePilots extends Command
      */
     public function handle()
     {
-
+        $today = Carbon::now(); // Get today's date and time
         $assignedPilots = PilotVehicleAssignment::all();
 
         // Decrease the login_days by 1
-        foreach ($assignedPilots as $pilots) {
-            if ($pilots->login_days > 0) {
-                $pilots->login_days -= 1;
-                $pilots->save();
+        foreach ($assignedPilots as $assignedPilot) {
+            if (!in_array($assignedPilot->status, ['Deactivated', 'Suspended'])) {
+                if ($assignedPilot->login_days > 0) {
+                    $assignedPilot->login_days -= 1;
+                    $assignedPilot->pilot->payment_due_date = Carbon::parse($assignedPilot->pilot->payment_due_date)->subDay();
+                    $assignedPilot->pilot->save();
+                    $assignedPilot->save();
+                }
             }
         }
-
-
-        $today = Carbon::now(); // Get today's date and time
 
         // Find pilots who:
         // - Have passed their payment due date
@@ -58,8 +59,6 @@ class DeactivateOverduePilots extends Command
         }
 
 
-
-        // Log how many pilots were deactivated
         $this->info(count($overduePilots) . " pilots have been deactivated.");
     }
 }

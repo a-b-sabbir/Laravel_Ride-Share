@@ -9,6 +9,11 @@ use Illuminate\Support\Carbon;
 
 class PaymentController extends Controller
 {
+    public function showPaymentPage()
+    {
+        return view('roles.pilot.payment');
+    }
+
     public function processPayment(Request $request)
     {
         // Validate incoming request data

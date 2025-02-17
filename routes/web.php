@@ -104,25 +104,7 @@ Route::post('/passenger/register', [PassengerController::class, 'store'])->name(
 
 
 // -------------------------------------------
-// Pilot Routes
-// -------------------------------------------
-
-Route::get('/pilot/payment', function () {
-    return view('roles.pilot.payment');
-})->name('pilot.payment');
-
-
-
-Route::middleware(['auth', PilotMiddleware::class])->group(function () {
-    Route::get('pilot/dashboard', [DashboardController::class, 'dashboard'])->name('pilot.dashboard');
-    Route::get('pilot/profile', [ProfileController::class, 'show'])->name('pilot.profile.show');
-    Route::post('/pilot/payment/process', [PaymentController::class, 'processPayment'])->name('pilot.payment.process');
-});
-
-
-
-// -------------------------------------------
-// Dashboard Routes
+// Super Admin Routes
 // -------------------------------------------
 
 Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
@@ -139,11 +121,21 @@ Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::delete('/deleteuser/{id}', [UserController::class, 'destroy'])->name('delete.user');
 });
 
+
+// -------------------------------------------
+// Admin Routes
+// -------------------------------------------
+
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('roles/admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('assign-pilot-to-vehicle.create');
     Route::post('admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('assign-pilot-to-vehicle.store');
 });
+
+
+// -------------------------------------------
+// Sub Admin Routes
+// -------------------------------------------
 
 Route::middleware(['auth', SubAdminMiddleware::class])->group(function () {
     Route::get('roles/sub_admin/dashboard', [DashboardController::class, 'dashboard'])->name('sub_admin.dashboard');
@@ -154,10 +146,22 @@ Route::middleware(['auth', SubAdminMiddleware::class])->group(function () {
     Route::get('sub-admin/profile', [SubAdminProfileController::class, 'show'])->name('sub-admin.profile.show');
 });
 
+
+// -------------------------------------------
+// Pilot Routes
+// -------------------------------------------
+
 Route::middleware(['auth', 'check.pilot.status'])->group(function () {
     Route::get('roles/pilot/dashboard', [DashboardController::class, 'dashboard'])->name('pilot.dashboard');
+    Route::get('pilot/profile', [ProfileController::class, 'show'])->name('pilot.profile.show');
+    Route::get('/pilot/payment', [PaymentController::class, 'showPaymentPage'])->name('pilot.payment');
+    Route::post('/pilot/payment/process', [PaymentController::class, 'processPayment'])->name('pilot.payment.process');
 });
 
+
+// -------------------------------------------
+// Passenger Routes
+// -------------------------------------------
 
 Route::middleware(['auth', PassengerMiddleware::class])->group(function () {
     Route::get('roles/passenger/dashboard', [DashboardController::class, 'dashboard'])->name('passenger.dashboard');
