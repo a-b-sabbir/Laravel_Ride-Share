@@ -3,8 +3,21 @@
 @section('content')
 
 <div class="container mt-4">
-    <h1>User Management</h1>
-    <p class="lead">Manage the platform pilots and admins from here.</p>
+    <div class="container mt-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1>User Management</h1>
+                <p class="lead">Manage the platform pilots and admins from here.</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="/chooseregistration" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus"></i> Add New User
+                </a>
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- Users Summary (Pilots) -->
     <div class="row">
@@ -62,7 +75,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Unassigned Pilot List -->
 
@@ -152,7 +164,7 @@
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>#</th>
+                        <th>Assignment ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -166,7 +178,7 @@
                 <tbody>
                     @foreach($assigned_pilots as $index => $record)
                     <tr>
-                        <td>{{ (int) $index + 1 }}</td>
+                        <td>{{ $record->id }}</td>
                         <td>{{ $record->user->name }}</td>
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>

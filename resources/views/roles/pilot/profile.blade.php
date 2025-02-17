@@ -1,4 +1,4 @@
-@extends('layout.super_admin.layout')
+@extends('layout.pilot.layout')
 
 @section('content')
 <div class="container py-4">
@@ -10,9 +10,17 @@
 
       <div class="ms-3">
         <h3 class="mb-1">{{ $pilot->user->name }}</h3>
-        <span class="badge 
-          {{ $pilot->account_status == 'Active' ? 'bg-success' : ($pilot->account_status == 'Suspended' ? 'bg-warning text-dark' : 'bg-danger') }}">
+        <span class="badge bg-success">
           {{ $pilot->account_status }}
+
+        </span>
+        <span class="badge bg-danger">
+          <!-- Approval Dropdown -->
+          @if($pilot->approval == true)
+          Approved
+          @else
+          Not Approved
+          @endif
         </span>
       </div>
     </div>
@@ -22,15 +30,6 @@
       <a href="#" class="btn btn-outline-success d-flex align-items-center">
         <i class="fas fa-edit me-1"></i> Edit Info
       </a>
-
-      <!-- Approval Dropdown -->
-      <form action="{{ route('pilot.approval', $pilot->id) }}" method="POST">
-        @csrf
-        <select name="approval" class="form-select form-select-sm" onchange="this.form.submit()">
-          <option value="1" {{ $pilot->approval == true ? 'selected' : '' }}>Approved</option>
-          <option value="0" {{ $pilot->approval == false ? 'selected' : '' }}>Not Approved</option>
-        </select>
-      </form>
     </div>
   </div>
 </div>
