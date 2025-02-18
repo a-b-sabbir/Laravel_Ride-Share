@@ -23,7 +23,7 @@ class TaxTokenController extends Controller
     public function uploadTaxToken(Request $request)
     {
         $validatedData = $request->validate([
-            'vehicle_id' => 'required|exists:vehicles,id',
+            'vehicle_id' => 'required|exists:vehicles,id|unique:vehicle_tax_token,vehicle_id',
             'tax_token_photo' => 'required',
             'print_date' => 'required|date',
             'registration_number' => 'required',
@@ -80,12 +80,6 @@ class TaxTokenController extends Controller
             'total_amount' => $validatedData['total_amount'],
         ]);
 
-
-
-
-
-        dd('abc');
-
-        return redirect()->route('show.vehicle.form');
+        return view('roles.pilot.waiting');
     }
 }

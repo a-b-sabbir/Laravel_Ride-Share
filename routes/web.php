@@ -163,6 +163,6 @@ Route::middleware(['auth', 'check.pilot.status'])->group(function () {
 // Passenger Routes
 // -------------------------------------------
 
-Route::middleware(['auth', PassengerMiddleware::class])->group(function () {
+Route::middleware(['auth', 'passenger'])->group(function () {
     Route::get('roles/passenger/dashboard', [DashboardController::class, 'dashboard'])->name('passenger.dashboard');
 });

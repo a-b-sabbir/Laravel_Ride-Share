@@ -25,6 +25,11 @@
                             @csrf
 
                             <input type="hidden" class="form-control" name="vehicle_id" id="vehicle_id" value={{ $vehicleID }}>
+                            @if ($errors->has('vehicle_id'))
+                            <div class="text-danger">
+                                <small>{{ $errors->first('vehicle_id') }}</small>
+                            </div>
+                            @endif
 
                             <!-- Registration Photo -->
                             <div class="mb-3">

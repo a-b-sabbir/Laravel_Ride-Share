@@ -52,15 +52,14 @@ class PilotController extends Controller
     {
 
         $validatedData = $request->validate([
+            'name' => 'required|string|max:50',
             'profile_photo' => 'required|image|mimes:jpg,png,jpeg|max:5000',
-            'name' => 'required|string',
             'email' => 'required|email|max:100',
             'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
             'phone_number' => 'required',
             'nid' => ['required', 'string', 'regex:/^\d{10}$|^\d{13}$|^\d{17}$/'],
             'nid_image' => 'required|image|mimes:jpg,png,jpeg|max:5000',
-            'address' => 'required|string',
             'emergency_contact_name' => 'nullable|string',
             'emergency_contact_number' => 'nullable|string|max:14',
             'relation_with_emergency_contact' => 'nullable|string',
@@ -88,15 +87,13 @@ class PilotController extends Controller
             $user = User::firstOrCreate(
                 ['phone_number' => $validatedData['phone_number']],
                 [
-                    'profile_photo' => $profilePhotoPath,
                     'name' => $validatedData['name'],
+                    'profile_photo' => $profilePhotoPath,
                     'email' => $validatedData['email'],
                     'password' => bcrypt($validatedData['password']),
                     'role_id' => 4
                 ]
             );
-
-
 
             if ($request->referral_code) {
                 $referrer = User::where('referral_code', $validatedData['referral_code'])->first();
@@ -132,7 +129,6 @@ class PilotController extends Controller
                 ],
                 [
                     'nid_image' => $nidImagePath,
-                    'address' => $validatedData['address'],
                     'emergency_contact_name' => $validatedData['emergency_contact_name'],
                     'emergency_contact_number' => $validatedData['emergency_contact_number'],
                     'relation_with_emergency_contact' => $validatedData['relation_with_emergency_contact'],
@@ -152,7 +148,4 @@ class PilotController extends Controller
             return redirect()->back()->with('error', 'Pilot registration failed. Please try again.');
         }
     }
-
-    public function licenseStep($id) {}
-    public function vehicleStep($id) {}
 }

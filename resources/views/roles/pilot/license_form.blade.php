@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <form action="{{ route('license.upload') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
-                            <input type="hidden" name="pilot_id" value="{{ $pilotId }}">
+                            <input type="hidden" name="pilot_id" value="{{ $pilot->id }}">
                             @if ($errors->has('pilot_id'))
                             <div class="text-danger">
                                 <small>{{ $errors->first('pilot_id') }}</small>
@@ -58,7 +58,7 @@
                             <!-- Name -->
                             <div class="mb-3">
                                 <label for="name" class="form-label fw-bold required">Full Name</label>
-                                <input type="text" class="form-control" name="name" id="name" placeholder="Enter your full name" value="{{ old('name') }}" required>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Enter your full name" value="{{ $pilot->user->name }}" readonly required>
                                 @if ($errors->has('name'))
                                 <div class="text-danger">
                                     <small>{{ $errors->first('name') }}</small>

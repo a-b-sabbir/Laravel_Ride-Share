@@ -20,7 +20,7 @@ class FitnessController extends Controller
     public function uploadFitness(Request $request)
     {
         $validatedData = $request->validate([
-            'vehicle_id' => 'required|exists:vehicles,id',
+            'vehicle_id' => 'required|exists:vehicles,id|unique:vehicle_fitness,vehicle_id',
             'fitness_photo' => 'required|image|mimes:jpeg,jpg,png|max:5000',
             'vehicle_identity_no' => 'required',
             'user_identity_no' => 'required',
