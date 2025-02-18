@@ -20,8 +20,9 @@ class LicenseController extends Controller
         if (!$pilot) {
             return redirect()->route('pilot.fail')->with('error', 'Pilot not found. Please ensure the correct ID.');
         }
+
         // Pass the pilot_id to the view
-        return view('roles.pilot.license_form', ['pilotId' => $pilotId]);
+        return view('roles.pilot.license_form', ['pilot' => $pilot]);
     }
 
 
@@ -29,7 +30,7 @@ class LicenseController extends Controller
     {
 
         $validatedData = $request->validate([
-            'pilot_id' => 'required|unique:pilot_licenses,pilot_id',
+            'pilot_id' => 'required|exists:pilots,id|unique:pilot_licenses,pilot_id',
             'license_photo' => 'required|image|mimes:jpg,png,jpeg|max:5000',
             'type' => 'required|in:Professional,Non-Professional',
             'name' => 'required|string|min:3|max:100',

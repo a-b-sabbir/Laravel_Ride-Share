@@ -22,7 +22,7 @@ class RegistrationCertificateController extends Controller
     public function uploadRegistrationCertificate(Request $request)
     {
         $validatedData = $request->validate([
-            'vehicle_id' => 'required|unique:vehicle_registration_certificate,vehicle_id',
+            'vehicle_id' => 'required|exists:vehicles,id|unique:vehicle_registration_certificate,vehicle_id',
             'registration_photo' => 'required|image|mimes:jpg,png,jpeg|max:5000',
             'registration_number' => 'required|string|max:30|unique:vehicle_registration_certificate,registration_number',
             'date' => 'required|date|before_or_equal:today',
