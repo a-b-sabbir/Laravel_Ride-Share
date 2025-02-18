@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vehicle\Bike;
+namespace App\Http\Controllers\Vehicle;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle\Bike\RegistrationCertificate;
@@ -74,7 +74,6 @@ class RegistrationCertificateController extends Controller
                 'laden_weight' => $validatedData['laden_weight'],
                 'issuing_authority' => $validatedData['issuing_authority']
             ]);
-            dd($validatedData);
 
             // Update the registration_step in Vehicle model
             $vehicle->registration_step = 'Vehicle Tax Token'; // Update to the next step

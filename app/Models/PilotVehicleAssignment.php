@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Pilot\Pilot;
 use App\Models\Vehicle\Vehicle;
 use Illuminate\Database\Eloquent\Model;
 

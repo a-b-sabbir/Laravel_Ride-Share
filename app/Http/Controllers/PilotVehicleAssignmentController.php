@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pilot;
+use App\Models\Pilot\Pilot;
 use App\Models\PilotVehicleAssignment;
 use App\Models\Referral;
 use App\Models\Vehicle\Vehicle;

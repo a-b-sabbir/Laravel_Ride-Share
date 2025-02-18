@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pilot;
+use App\Models\Pilot\Pilot;
 use App\Models\PilotVehicleAssignment;
 use App\Models\Vehicle\Vehicle;
 use Illuminate\Http\Request;
