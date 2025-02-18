@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Pilot;
 
 use App\Models\Pilot\PilotLicense;
+use App\Models\PilotVehicleAssignment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Pilot extends Model

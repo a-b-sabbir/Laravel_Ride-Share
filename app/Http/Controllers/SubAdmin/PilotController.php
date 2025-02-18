@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\SubAdmin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pilot;
+use App\Models\Pilot\Pilot;
 use Illuminate\Http\Request;
 
 class PilotController extends Controller

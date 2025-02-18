@@ -14,8 +14,8 @@ use App\Http\Controllers\SuperAdmin\PilotController as SuperAdminPilotController
 use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
 use App\Http\Controllers\SubAdmin\ProfileController as SubAdminProfileController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Vehicle\Bike\RegistrationCertificateController;
-use App\Http\Controllers\Vehicle\Car\FitnessController;
+use App\Http\Controllers\Vehicle\RegistrationCertificateController;
+use App\Http\Controllers\Vehicle\FitnessController;
 use App\Http\Controllers\Vehicle\TaxTokenController;
 use App\Http\Controllers\Vehicle\VehicleController;
 use App\Http\Middleware\AdminMiddleware;

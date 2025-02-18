@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vehicle\Car;
+namespace App\Http\Controllers\Vehicle;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle\Car\Fitness;
@@ -11,7 +11,7 @@ class FitnessController extends Controller
 {
     public function showFitnessForm($vehicleID, $RegNo)
     {
-        return view('vehicle.car.fitness', [
+        return view('vehicle.fitness', [
             'vehicleID' => $vehicleID,
             'registration_number' => $RegNo
         ]);

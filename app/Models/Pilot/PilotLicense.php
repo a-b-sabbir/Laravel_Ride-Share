@@ -2,7 +2,7 @@
 
 namespace App\Models\Pilot;
 
-use App\Models\Pilot;
+use App\Models\Pilot\Pilot;
 use Illuminate\Database\Eloquent\Model;
 
 class PilotLicense extends Model

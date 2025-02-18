@@ -9,7 +9,7 @@
         </p>
 
         <div class="mt-4">
-            <img src="{{ asset('images/waiting_approval.svg') }}" alt="Waiting for Approval" class="w-64 mx-auto">
+            <img src="" alt="Waiting for Approval" class="w-64 mx-auto">
         </div>
 
         <p class="text-gray-500 mt-4">Approval usually takes <strong>24-48 hours</strong>. Please be patient.</p>
