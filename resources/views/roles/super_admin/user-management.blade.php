@@ -101,7 +101,7 @@
                 <tbody>
                     @foreach($unassigned_pilots as $index => $record)
                     <tr>
-                        <td>{{ (int) $index + 1 }}</td>
+                        <td>{{ $record->id }}</td>
                         <td>{{ $record->user->name }}</td>
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>
@@ -135,7 +135,6 @@
             </table>
 
             @if($unassigned_pilots->count() > 9)
-            <!-- Pagination Links -->
             <div class="d-flex justify-content-center">
                 {{ $unassigned_pilots->links('pagination::bootstrap-5') }}
             </div>
@@ -150,7 +149,7 @@
     </div>
 
 
-    <!-- Assigned Pilot List -->
+    <!-- Unassigned Pilot List -->
 
     <div class="my-4">
         <div class="row">
@@ -172,6 +171,7 @@
                         <th>Login Days</th>
                         <th>Payment Due Date</th>
                         <th>Status</th>
+                        <th>Vehicle Number</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -183,8 +183,8 @@
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>
                         <td>{{ $record->wallet_balance }}</td>
-                        <td>{{ $record ->assignments->login_days }}</td>
-                        <td>{{ $record -> payment_due_date }}</td>
+                        <td>{{ $record->login_days }}</td>
+                        <td>{{ $record->payment_due_date }}</td>
                         <td>
                             <form action="{{ route('pilot.updateStatus', $record->id) }}" method="POST" id="statusForm">
                                 @csrf
@@ -197,6 +197,7 @@
                                 </div>
                             </form>
                         </td>
+                        <td>{{ $record->assignments->vehicle->vehicle_number }}</td>
                         <td>
                             <a href="{{ route('super_admin-assign-pilot-to-vehicle.show', $record->id) }}" class="btn btn-success btn-sm">
                                 <i class="fas fa-user-check"></i> View
@@ -204,27 +205,11 @@
                             <a href="" class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <form action="{{ route('delete.user', $record->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                @csrf
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Delete
-                                </button>
-                            </form>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-            @if($assigned_pilots->count() > 9)
-            <!-- Pagination Links -->
-            <div class="d-flex justify-content-center">
-                {{ $assigned_pilots->links('pagination::bootstrap-5') }}
-            </div>
-            @endif
-        </div>
-        @else
-        <div class="alert alert-warning" role="alert">
-            No users available.
         </div>
         @endif
     </div>

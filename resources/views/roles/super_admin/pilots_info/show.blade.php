@@ -17,21 +17,32 @@
       </div>
     </div>
 
-    <div class="d-flex align-items-center gap-2">
+    <div class="d-flex align-items-center flex-wrap gap-3">
       <!-- Edit Info Button -->
-      <a href="#" class="btn btn-outline-success d-flex align-items-center">
-        <i class="fas fa-edit me-1"></i> Edit Info
+      <a href="#" class="btn btn-outline-success d-flex align-items-center px-3">
+        <i class="fas fa-edit me-2"></i> Edit Info
       </a>
 
       <!-- Approval Dropdown -->
-      <form action="{{ route('pilot.approval', $pilot->id) }}" method="POST">
+      <form action="{{ route('pilot.approval', $pilot->id) }}" method="POST" class="d-flex align-items-center">
         @csrf
-        <select name="approval" class="form-select form-select-sm" onchange="this.form.submit()">
+        <select name="approval" class="form-select form-select-sm" style="min-width: 130px;" onchange="this.form.submit()">
           <option value="1" {{ $pilot->approval == true ? 'selected' : '' }}>Approved</option>
           <option value="0" {{ $pilot->approval == false ? 'selected' : '' }}>Not Approved</option>
         </select>
       </form>
+
+      <!-- Delete Assignment Button -->
+      <form action="{{ route('delete_assignment', $pilot->assignments->id) }}" method="POST" class="d-flex align-items-center">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger d-flex align-items-center px-3"
+          onclick="return confirm('Are you sure you want to delete this assignment?');">
+          <i class="fas fa-trash-alt me-2"></i> Delete
+        </button>
+      </form>
     </div>
+
   </div>
 </div>
 

@@ -15,8 +15,7 @@ class PilotVehicleAssignment extends Model
         'end_date',
         'status',
         'assignment_notes',
-        'admin_id',
-        'login_days'
+        'admin_id'
     ];
     public function pilot()
     {

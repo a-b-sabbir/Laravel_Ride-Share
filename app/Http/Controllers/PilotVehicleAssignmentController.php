@@ -58,8 +58,7 @@ class PilotVehicleAssignmentController extends Controller
                 'end_date' => $request->end_date ?: null,
                 'status' => $validatedData['status'],
                 'assignment_notes' => $request->assignment_notes,
-                'admin_id' => $user->id,
-                'login_days' => 30,  // This is for the first 30 free days
+                'admin_id' => $user->id
             ]);
 
             $referrer_pilot = Pilot::findOrFail($validatedData['pilot_id']);
@@ -71,6 +70,7 @@ class PilotVehicleAssignmentController extends Controller
 
             // Set the payment_due_date to 30 days from now
             $referrer_pilot->payment_due_date = Carbon::now()->addDays(30);
+            $referrer_pilot->login_days = 30;
             $referrer_pilot->approval_date = now();
 
             // Ensure the approval field is set to true if it's false
@@ -116,32 +116,27 @@ class PilotVehicleAssignmentController extends Controller
                 $referrerPilot = Pilot::where('user_id', $referrer)->first();
 
 
-                // Check if the referrer is a pilot
-                $assignedPilot = PilotVehicleAssignment::where('pilot_id', $referrerPilot->id)->first();
-
-                if ($assignedPilot) {
-                    $pilot = $assignedPilot->pilot; // Store the related pilot once to avoid redundant queries
+                if ($referrerPilot) {
 
                     if ($vehicle_type == 'Car') {
-                        $assignedPilot->increment('login_days', 10);  // Adding 10 extra days
-                        $pilot->update([
-                            'payment_due_date' => Carbon::parse($pilot->payment_due_date)->addDays(10)  // Adding 10 extra days
+                        $referrerPilot->increment('login_days', 10);  // Adding 10 extra days
+                        $referrerPilot->update([
+                            'payment_due_date' => Carbon::parse($referrerPilot->payment_due_date)->addDays(10)  // Adding 10 extra days
                         ]);
                     } elseif ($vehicle_type == 'Bike') {
-                        $assignedPilot->increment('login_days', 4);  // Adding 4 extra days
-                        $pilot->update([
-                            'payment_due_date' => Carbon::parse($pilot->payment_due_date)->addDays(4)  // Adding 4 extra days
+                        $referrerPilot->increment('login_days', 4);  // Adding 4 extra days
+                        $referrerPilot->update([
+                            'payment_due_date' => Carbon::parse($referrerPilot->payment_due_date)->addDays(4)  // Adding 4 extra days
                         ]);
                     }
                 }
             }
 
-
-
             $referrer_pilot->save();
 
             DB::commit();
-            // Redirect based on the user's role
+
+
             $role = Auth::user()->role->name;
             switch ($role) {
                 case 'Super Admin':
@@ -154,30 +149,25 @@ class PilotVehicleAssignmentController extends Controller
                     abort(403, 'Unauthorized Action');
             }
         } catch (\Exception $e) {
-            // If anything fails, roll back the transaction
+
             DB::rollBack();
-            // Log or display error message
+
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }
 
 
-    // Update assignment status
-    public function updateAssignmentStatus(Request $request, $assignmentId)
+    public function deleteAssignment($assignedID)
     {
-        $validatedData = $request->validate([
-            'status' => 'required|in:Active,Suspended,Deactivated',
-        ]);
+        $assigned = PilotVehicleAssignment::findOrFail($assignedID);
 
-        $assignment = PilotVehicleAssignment::findOrFail($assignmentId);
-        $assignment->status = $validatedData['status'];
-
-        if (in_array($validatedData['status'], ['Suspended', 'Deactivated'])) {
-            $assignment->end_date = Carbon::now();
+        if ($assigned->pilot) {
+            $assigned->pilot->update(['account_status' => 'Suspended']);
         }
 
-        $assignment->save();
+        $assigned->delete();
 
-        return redirect()->route('roles.sub_admin.dashboard')->with('success', 'Assignment status updated successfully.');
+
+        return redirect()->route('user-management')->with('success', 'Assignment deleted successfully.');
     }
 }

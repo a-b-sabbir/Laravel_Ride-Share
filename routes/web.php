@@ -117,8 +117,11 @@ Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::get('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('super_admin-assign-pilot-to-vehicle.create');
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');
     Route::get('super_admin/assign-pilot-to-vehicle/{id}', [SuperAdminPilotController::class, 'show'])->name('super_admin-assign-pilot-to-vehicle.show');
+    Route::get('/super-admin/reassign-pilot/{assignedID}', [PilotVehicleAssignmentController::class, 'showReassignForm'])->name('super_admin.reassignPilotForm');
+    Route::post('/super_admin/reassign-pilot/{pilotID}', [PilotVehicleAssignmentController::class, 'reassignPilotVehicle'])->name('super_admin.reassign_pilot_vehicle');
     Route::get('super-admin/profile', [SuperAdminProfileController::class, 'show'])->name('super-admin.profile.show');
-    Route::delete('/deleteuser/{id}', [UserController::class, 'destroy'])->name('delete.user');
+    Route::delete('/super-admin/delete-assignment/{assignedID}', [PilotVehicleAssignmentController::class, 'deleteAssignment'])->name('delete_assignment');
+
 });
 
 

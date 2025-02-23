@@ -21,7 +21,9 @@ class Pilot extends Model
         'registration_step',
         'last_payment_date',
         'payment_due_date',
-        'paid_amount'
+        'paid_amount',
+        'login_days',
+        'account_status'
     ];
 
     public function user()
