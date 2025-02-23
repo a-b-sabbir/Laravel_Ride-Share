@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Pilot;
+use App\Models\Pilot\Pilot;
 use App\Models\PilotVehicleAssignment;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -28,16 +28,15 @@ class DeactivateOverduePilots extends Command
     public function handle()
     {
         $today = Carbon::now(); // Get today's date and time
-        $assignedPilots = PilotVehicleAssignment::all();
+        $pilots = Pilot::all();
 
         // Decrease the login_days by 1
-        foreach ($assignedPilots as $assignedPilot) {
-            if (!in_array($assignedPilot->status, ['Deactivated', 'Suspended'])) {
-                if ($assignedPilot->login_days > 0) {
-                    $assignedPilot->login_days -= 1;
-                    $assignedPilot->pilot->payment_due_date = Carbon::parse($assignedPilot->pilot->payment_due_date)->subDay();
-                    $assignedPilot->pilot->save();
-                    $assignedPilot->save();
+        foreach ($pilots as $pilot) {
+            if (!in_array($pilot->status, ['Deactivated', 'Suspended'])) {
+                if ($pilot->login_days > 0) {
+                    $pilot->login_days -= 1;
+                    $pilot->payment_due_date = Carbon::parse($pilot->payment_due_date)->subDay();
+                    $pilot->save();
                 }
             }
         }
@@ -47,7 +46,7 @@ class DeactivateOverduePilots extends Command
         // - Have no extra login days left
         // - Are not already deactivated
         $overduePilots = PilotVehicleAssignment::join('pilots', 'pilot_vehicle_assignments.pilot_id', '=', 'pilots.id')
-            ->where('pilot_vehicle_assignments.login_days', '<=', 0)
+            ->where('pilots.login_days', '<=', 0)
             ->where('pilot_vehicle_assignments.status', '!=', 'Deactivated')
             ->whereDate('pilots.payment_due_date', '<=', $today)
             ->select('pilot_vehicle_assignments.id as assignment_id', 'pilots.id as pilot_id')
