@@ -108,21 +108,36 @@ Route::post('/passenger/register', [PassengerController::class, 'store'])->name(
 // -------------------------------------------
 
 Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
+
+    // Dashboard
     Route::get('roles/super_admin/dashboard', [DashboardController::class, 'dashboard'])->name('super_admin.dashboard');
+
+    // User Management
     Route::get('users', [UserController::class, 'index'])->name('user-management');
-    Route::post('/pilot/{pilotID}/update-status', [SuperAdminPilotController::class, 'updatePilotStatus'])->name('pilot.updateStatus');
+
+    // Pilot Management
+    Route::get('super_admin/unassigned-pilot/{id}', [SuperAdminPilotController::class, 'unassignedPilotShow'])->name('unassigned-pilot.show');
+    Route::get('super_admin/assigned-pilot/{id}', [SuperAdminPilotController::class, 'assignedPilotShow'])->name('assigned-pilot.show');
+
+    Route::post('/unassigned-pilot/{pilotID}/update-status', [SuperAdminPilotController::class, 'updateUnassignedPilotStatus'])->name('unassigned_pilot.updateStatus');
+    Route::post('/assigned-pilot/{pilotID}/update-status', [SuperAdminPilotController::class, 'updatePilotStatus'])->name('pilot.updateStatus');
     Route::post('/pilot/{pilotID}/update-pilot-background-status', [SuperAdminPilotController::class, 'updatePilotBackgroundCheckStatus'])->name('pilot.backgroundCheckStatus');
     Route::post('/pilot/{pilotID}/update-approval', [SuperAdminPilotController::class, 'updatePilotApproval'])->name('pilot.approval');
-    Route::view('settings', 'roles.super_admin.settings.settings')->name('settings');
+
+    // Pilot-Vehicle Assignment
     Route::get('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('super_admin-assign-pilot-to-vehicle.create');
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');
-    Route::get('super_admin/assign-pilot-to-vehicle/{id}', [SuperAdminPilotController::class, 'show'])->name('super_admin-assign-pilot-to-vehicle.show');
+
     Route::get('/super-admin/reassign-pilot/{assignedID}', [PilotVehicleAssignmentController::class, 'showReassignForm'])->name('super_admin.reassignPilotForm');
     Route::post('/super_admin/reassign-pilot/{pilotID}', [PilotVehicleAssignmentController::class, 'reassignPilotVehicle'])->name('super_admin.reassign_pilot_vehicle');
-    Route::get('super-admin/profile', [SuperAdminProfileController::class, 'show'])->name('super-admin.profile.show');
+
     Route::delete('/super-admin/delete-assignment/{assignedID}', [PilotVehicleAssignmentController::class, 'deleteAssignment'])->name('delete_assignment');
 
+    // Super Admin Profile & Settings
+    Route::get('super-admin/profile', [SuperAdminProfileController::class, 'show'])->name('super-admin.profile.show');
+    Route::view('settings', 'roles.super_admin.settings.settings')->name('settings');
 });
+
 
 
 // -------------------------------------------

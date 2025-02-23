@@ -89,28 +89,46 @@
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>#</th>
+                        <th>Assignment ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Wallet</th>
+                        <th>Login Days</th>
+                        <th>Payment Due Date</th>
+                        <th>Status</th>
                         <th>Background Check</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($unassigned_pilots as $index => $record)
+                    @foreach($unassigned_pilots as $record)
                     <tr>
                         <td>{{ $record->id }}</td>
                         <td>{{ $record->user->name }}</td>
                         <td>{{ $record->user->email }}</td>
                         <td>{{ $record->user->phone_number }}</td>
                         <td>{{ $record->wallet_balance }}</td>
+                        <td>{{ $record->login_days }}</td>
+                        <td>{{ $record->payment_due_date }}</td>
+                        <td>
+                            <form action="{{ route('unassigned_pilot.updateStatus', $record->id) }}" method="POST" id="statusForm">
+                                @csrf
+                                <div class="form-group">
+                                    <select name="status" class="form-control" id="status" onchange="this.form.submit()">
+                                        <option value="Active" {{ $record->account_status == 'Active' ? 'selected' : '' }}>Active</option>
+                                        <option value="Suspended" {{ $record->account_status == 'Suspended' ? 'selected' : '' }}>Suspended</option>
+                                        <option value="Deactivated" {{ $record->account_status == 'Deactivated' ? 'selected' : '' }}>Deactivated</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </td>
                         <td>
                             <form action="{{ route('pilot.backgroundCheckStatus', $record->id) }}" method="POST" id="statusForm">
                                 @csrf
                                 <div class="form-group">
                                     <select name="background_check_status" class="form-control" id="background_check_status" onchange="this.form.submit()">
+
                                         <option value="Pending" {{ $record->background_check_status == 'Pending' ? 'selected' : '' }}>Pending</option>
                                         <option value="Passed" {{ $record->background_check_status == 'Passed' ? 'selected' : '' }}>Passed</option>
                                         <option value="Failed" {{ $record->background_check_status == 'Failed' ? 'selected' : '' }}>Failed</option>
@@ -119,14 +137,11 @@
                             </form>
                         </td>
                         <td>
-                            <a href="{{ route('super_admin-assign-pilot-to-vehicle.show', $record->id) }}" class="btn btn-success btn-sm">
+                            <a href="{{ route('unassigned-pilot.show', $record->id) }}" class="btn btn-success btn-sm">
                                 <i class="fas fa-user-check"></i> View
                             </a>
                             <a href="" class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <a href="" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
-                                <i class="fas fa-trash"></i> Delete
                             </a>
                         </td>
                     </tr>
@@ -199,7 +214,7 @@
                         </td>
                         <td>{{ $record->assignments->vehicle->vehicle_number }}</td>
                         <td>
-                            <a href="{{ route('super_admin-assign-pilot-to-vehicle.show', $record->id) }}" class="btn btn-success btn-sm">
+                            <a href="{{ route('assigned-pilot.show', $record->id) }}" class="btn btn-success btn-sm">
                                 <i class="fas fa-user-check"></i> View
                             </a>
                             <a href="" class="btn btn-primary btn-sm">

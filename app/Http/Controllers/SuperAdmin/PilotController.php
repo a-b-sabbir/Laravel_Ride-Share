@@ -10,14 +10,35 @@ use Illuminate\Http\Request;
 
 class PilotController extends Controller
 {
-    public function show($id)
+
+    public function unassignedPilotShow($id)
+    {
+        $pilot = Pilot::with(['user', 'license'])->findOrFail($id);
+
+        return view('roles.super_admin.pilots_info.show', compact('pilot'));
+    }
+    public function assignedPilotShow($id)
     {
         $pilot = Pilot::with(['user', 'license', 'assignments.vehicle'])->findOrFail($id);
-
 
         return view('roles.super_admin.pilots_info.show', compact('pilot'));
     }
 
+    public function updateUnassignedPilotStatus(Request $request, $pilotID)
+    {
+
+        $request->validate([
+            'status' => 'required|in:Active,Suspended,Deactivated'
+        ]);
+
+
+        $pilot = Pilot::findOrFail($pilotID);
+
+        $pilot->account_status = $request->input('status');
+        $pilot->save();
+
+        return redirect()->back()->with('success', 'Pilot status updated successfully.');
+    }
     public function updatePilotStatus(Request $request, $pilotID)
     {
 

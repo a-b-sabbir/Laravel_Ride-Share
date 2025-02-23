@@ -18,7 +18,7 @@ class PilotVehicleAssignmentController extends Controller
     public function create()
     {
 
-        $pilots = Pilot::whereDoesntHave('assignments')->get(); // Get unassigned pilots
+        $pilots = Pilot::whereDoesntHave('assignments')->where('background_check_status', 'Passed')->get(); // Get unassigned pilots
         $vehicles = Vehicle::whereDoesntHave('assignments')->get(); // Get unassigned vehicles
 
 

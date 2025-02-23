@@ -33,7 +33,7 @@
       </form>
 
       <!-- Delete Assignment Button -->
-      <form action="{{ route('delete_assignment', $pilot->assignments->id) }}" method="POST" class="d-flex align-items-center">
+      <form action="{{ route('delete_assignment', $pilot->id) }}" method="POST" class="d-flex align-items-center">
         @csrf
         @method('DELETE')
         <button type="submit" class="btn btn-danger d-flex align-items-center px-3"
