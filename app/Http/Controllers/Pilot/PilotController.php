@@ -148,4 +148,6 @@ class PilotController extends Controller
             return redirect()->back()->with('error', 'Pilot registration failed. Please try again.');
         }
     }
+
+ 
 }

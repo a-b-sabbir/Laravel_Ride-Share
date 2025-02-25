@@ -124,6 +124,12 @@ Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
     Route::post('/pilot/{pilotID}/update-pilot-background-status', [SuperAdminPilotController::class, 'updatePilotBackgroundCheckStatus'])->name('pilot.backgroundCheckStatus');
     Route::post('/pilot/{pilotID}/update-approval', [SuperAdminPilotController::class, 'updatePilotApproval'])->name('pilot.approval');
 
+    Route::get('/pilots/{pilot}/edit/basic', [SuperAdminPilotController::class, 'editBasic'])->name('pilots.edit.basic');
+    Route::get('/pilots/{pilot}/edit/license', [SuperAdminPilotController::class, 'editLicense'])->name('pilots.edit.license');
+
+    Route::put('/pilots/{pilot}/update/basic', [SuperAdminPilotController::class, 'updateBasic'])->name('pilots.update.basic');
+    Route::put('/pilots/{pilot}/update/license', [SuperAdminPilotController::class, 'updateLicense'])->name('pilots.update.license');
+    
     // Pilot-Vehicle Assignment
     Route::get('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'create'])->name('super_admin-assign-pilot-to-vehicle.create');
     Route::post('super_admin/assign-pilot-to-vehicle', [PilotVehicleAssignmentController::class, 'store'])->name('super_admin-assign-pilot-to-vehicle.store');

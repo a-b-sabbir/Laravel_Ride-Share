@@ -19,9 +19,15 @@
 
     <div class="d-flex align-items-center flex-wrap gap-3">
       <!-- Edit Info Button -->
-      <a href="#" class="btn btn-outline-success d-flex align-items-center px-3">
-        <i class="fas fa-edit me-2"></i> Edit Info
-      </a>
+      <div class="dropdown">
+        <button class="btn btn-outline-success dropdown-toggle px-3" type="button" id="editPilotDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-edit me-2"></i> Edit Info
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="editPilotDropdown">
+          <li><a class="dropdown-item" href="{{ route('pilots.edit.basic', $pilot) }}">Edit Personal Info</a></li>
+          <li><a class="dropdown-item" href="{{ route('pilots.edit.license', $pilot->id) }}">Edit License Info</a></li>
+        </ul>
+      </div>
 
       <!-- Approval Dropdown -->
       <form action="{{ route('pilot.approval', $pilot->id) }}" method="POST" class="d-flex align-items-center">
@@ -87,6 +93,7 @@
                   <img src="{{ asset('storage/' . $pilot->license->license_photo ?? '' )}}" alt="Driving License" class="img-thumbnail" style="width: 150px; height: 100px;">
                 </div>
                 <div class="ms-3">
+                  <p><strong>License Name:</strong> {{ $pilot->license->name ?? 'N/A' }}</p>
                   <p><strong>License Number:</strong> {{ $pilot->license->license_number ?? 'N/A' }}</p>
                   <p><strong>Issued Date:</strong> {{ $pilot->license->issue_date ?? 'N/A' }}</p>
                   <p><strong>Expiry Date:</strong> {{ $pilot->license->expiry_date ?? 'N/A' }}</p>
@@ -171,7 +178,6 @@
       @endif
     </div>
   </div>
-
-  @endsection
-
 </div>
+
+@endsection
